@@ -623,11 +623,41 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7227344809281659708, guid: 2b89dd9bd6bd59a4ebcf5bbb33f0a6f4,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: d37cbf58d7cbb504e8f2e80a9a1e88a2, type: 2}
+    - target: {fileID: -7227344809281659708, guid: 2b89dd9bd6bd59a4ebcf5bbb33f0a6f4,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: d37cbf58d7cbb504e8f2e80a9a1e88a2, type: 2}
+    - target: {fileID: -6175416827168105641, guid: 2b89dd9bd6bd59a4ebcf5bbb33f0a6f4,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 312eace659a3211428c37bd73b06c80f, type: 2}
+    - target: {fileID: -3472426985354216863, guid: 2b89dd9bd6bd59a4ebcf5bbb33f0a6f4,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 2fcc44e58ce24594ca2e1f4cc45b0a66, type: 2}
     - target: {fileID: -3230359877503427227, guid: 2b89dd9bd6bd59a4ebcf5bbb33f0a6f4,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 407cb2e2a4da7ee41996398745c11b33, type: 2}
+    - target: {fileID: -3102313135282425292, guid: 2b89dd9bd6bd59a4ebcf5bbb33f0a6f4,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 9aaea07dcf93e664f96dadab52c7edd0, type: 2}
+    - target: {fileID: -2124828888127118834, guid: 2b89dd9bd6bd59a4ebcf5bbb33f0a6f4,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: f7b031e976423d24ebfbd6461dac24ef, type: 2}
     - target: {fileID: -928620225287021761, guid: 2b89dd9bd6bd59a4ebcf5bbb33f0a6f4,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
