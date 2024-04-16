@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Samples.Whisper;
+using Scripts.TexToSpeech;
 using UnityEngine.SocialPlatforms.Impl;
 
 
@@ -13,15 +14,15 @@ public class AnimationsHandler : MonoBehaviour
     bool isTalking;
     string rating;
 
-    Whisper whisper = new Whisper();
-    //Polly polly = new Polly();
+    Whisper whisper;
+    TextToSpeech speech;   
 
     void Start()
     {
         anim = GetComponent<Animator>();
         rating = GetComponent<string>();
         //isRecording = whisper.getRecordingState();
-        //isTalking = polly.getTalkingState();
+        //isTalking = speech.talking;
     }
 
     private void setRating()

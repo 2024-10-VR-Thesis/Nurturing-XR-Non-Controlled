@@ -8,10 +8,13 @@ using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class TextToSpeech : MonoBehaviour
+namespace Scripts.TexToSpeech
+{
+    public class TextToSpeech : MonoBehaviour
 {
     [SerializeField] private AudioSource audioSource;
     public string speak;
+    public bool talking;
     // Start is called before the first frame update
     void Start()
     {
@@ -68,4 +71,5 @@ public class TextToSpeech : MonoBehaviour
     }
 
 
+}
 }
