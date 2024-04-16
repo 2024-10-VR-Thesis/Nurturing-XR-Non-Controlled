@@ -3,10 +3,13 @@ using Amazon.Polly;
 using Amazon.Polly.Model;
 using Amazon.Runtime;
 using System.IO;
+using System;
 using System.Threading.Tasks;
 using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.Networking;
+using Newtonsoft.Json.Linq;
+using Unity.VisualScripting;
 
 namespace Scripts.TexToSpeech
 {
@@ -14,16 +17,19 @@ namespace Scripts.TexToSpeech
 {
     [SerializeField] private AudioSource audioSource;
     public string speak;
-    public bool talking;
-    // Start is called before the first frame update
+
     void Start()
     {
-       speak = "hello, im Ivi";
+        string path = "Assets/Static speech/tutorial.json";
+        string jsonString = File.ReadAllText(path);
+        TextToSpeechData data = JsonUtility.FromJson<TextToSpeechData>(jsonString);
+        speak = data.EN;
         texttospeech();
     }
 
     void Update()
     {
+
     }
 
     public void setSpeak(string text)
@@ -42,7 +48,7 @@ namespace Scripts.TexToSpeech
             VoiceId = VoiceId.Ivy,
             OutputFormat = OutputFormat.Mp3
         };
-        var credentials = new BasicAWSCredentials("","");
+        var credentials = new BasicAWSCredentials("", "");
         var client = new AmazonPollyClient(credentials, RegionEndpoint.USEast1);
         var response = await client.SynthesizeSpeechAsync(request);
         WriteintoFile(response.AudioStream);
@@ -72,4 +78,10 @@ namespace Scripts.TexToSpeech
 
 
 }
+    [System.Serializable]
+    public class TextToSpeechData
+    {
+        public string EN; // "EN" is the key for English text
+    }
+
 }
