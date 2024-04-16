@@ -1,4 +1,4 @@
-﻿using Amazon.Polly.Model;
+using Amazon.Polly.Model;
 using Amazon.Polly;
 using Amazon.Runtime;
 using OpenAI;
@@ -10,6 +10,7 @@ using UnityEngine.Networking;
 using UnityEngine.UI;
 using Scripts.TexToSpeech;
 using Amazon;
+using System.Text.RegularExpressions;
 
 namespace Samples.Whisper
 {
@@ -29,32 +30,30 @@ namespace Samples.Whisper
         private OpenAIApi openai = new OpenAIApi();
         private OpenAIApi openAI = new OpenAIApi();
         private List<ChatMessage> messages = new List<ChatMessage>();
-        private string prompt = "Act as 3 year old child. Dont break character. Don't ever mentioned you are an AI model. We are going to play a game where i mentioned an object and you have to make 1 imaginative question about the question as 3 year old kid would do";
-        private string scorePrompt = "Score our conversation from 1-10, dont write words just the score based on a psichology pov";
-        private List<string> scores;
+        private string prompt = "Act as 5 y/o child. Dont break character. Dont ever mention you are an AI model. You are going to create an imaginative question based on an object or a previous conversation, just the question";
+        private string scorePrompt = "Score our conversation from 1-10, dont write words just the score based on a child psichology pov";
+        private List<int> scores = new List<int>();
         public TextToSpeech tts;
+        private bool conversationMode = false; //todo: va en la clase de semaforo
+        private bool askAgain = false; //todo: va en la clase de semaforo
 
-        private void Start()
-        {
-#if UNITY_WEBGL && !UNITY_EDITOR
-            dropdown.options.Add(new Dropdown.OptionData("Microphone not supported on WebGL"));
-#else
+
+        private void Start() {
+            #if UNITY_WEBGL && !UNITY_EDITOR
+                        dropdown.options.Add(new Dropdown.OptionData("Microphone not supported on WebGL"));
             /*
-            foreach (var device in Microphone.devices)
-            {
-                dropdown.options.Add(new Dropdown.OptionData(device));
-            }
-            recordButton.onClick.AddListener(StartRecording);
-            dropdown.onValueChanged.AddListener(ChangeMicrophone);
+            #else
+                        foreach (var device in Microphone.devices)
+                        {
+                            dropdown.options.Add(new Dropdown.OptionData(device));
+                        }
+                        recordButton.onClick.AddListener(StartRecording);
+                        dropdown.onValueChanged.AddListener(ChangeMicrophone);
 
-            var index = PlayerPrefs.GetInt("user-mic-device-index");
-            dropdown.SetValueWithoutNotify(index);
-            scores = new List<string>();
+                        var index = PlayerPrefs.GetInt("user-mic-device-index");
+                        dropdown.SetValueWithoutNotify(index);
+            #endif
             */
-
-            GenerateImaginativeQuestion("fork");
-            GenerateImaginativeQuestion("fork");
-#endif
         }
 
         private void ChangeMicrophone(int index)
@@ -69,18 +68,18 @@ namespace Samples.Whisper
 
             var index = PlayerPrefs.GetInt("user-mic-device-index");
 
-#if !UNITY_WEBGL
-            clip = Microphone.Start(dropdown.options[index].text, false, duration, 44100);
-#endif
-        }
+            #if !UNITY_WEBGL
+                        clip = Microphone.Start(dropdown.options[index].text, false, duration, 44100);
+            #endif
+                    }
 
-        private async void EndRecording()
-        {
-            message.text = "Transcripting...";
+                    private async void EndRecording()
+                    {
+                        message.text = "Transcripting...";
 
-#if !UNITY_WEBGL
-            Microphone.End(null);
-#endif
+            #if !UNITY_WEBGL
+                        Microphone.End(null);
+            #endif
 
             byte[] data = SaveWav.Save(fileName, clip);
 
@@ -111,38 +110,74 @@ namespace Samples.Whisper
             return res.Text;
         }
 
-        private async Task GenerateImaginativeQuestion(string transcribedText)
+
+        private async Task<int> ExtractRatingFromResponse(string responseText)
+        {
+            Match match = Regex.Match(responseText, @"\d+");
+
+            if (match.Success)
+            {
+                return int.Parse(match.Value);
+            }
+            else
+            { 
+                return -1 ; //Si no se encuentra un número en el comentario se devuelve -1 por lo que no se imprime en consola
+            }
+        }
+
+        private async Task GenerateImaginativeQuestion(string transcribedText) //no es necesariamente transcripcion, tambien es objeto
         {
             ChatMessage newMessage = new ChatMessage();
             newMessage.Content = transcribedText;
             newMessage.Role = "user";
 
-            if (messages.Count == 0)
+            if (messages.Count == 0 || askAgain)
             {
-                newMessage.Content = prompt;
-                messages.Add(newMessage);
+                var fullPrompt = prompt;
+                if (askAgain) {
+                    messages.Add(transcribedText);
+                    var conversationHistory = messages.Skip(Math.Max(0, messages.Length - 2));
+                    fullPrompt +=  "Conversation: " + conversationHistory;
+                }
+                else {
+                    var object = transcribedText;
+                    fullPrompt += "Object: " + object;
+                }
+                
+                newMessage.Content = fullPrompt;
+                //messages.Add(newMessage);
 
                 CreateChatCompletionRequest requestR = new CreateChatCompletionRequest();
                 requestR.Messages = messages;
                 requestR.Model = "gpt-3.5-turbo";
 
+                CreateChatCompletionRequest requestAI = new CreateChatCompletionRequest();
+                requestAI.Messages = messages;
+                requestAI.Model = "gpt-3.5-turbo";
+
                 var responseR = await openAI.CreateChatCompletion(requestR);
 
-                if (responseR.Choices != null && responseR.Choices.Count > 0)
+                var aiResponse = await openAI.CreateChatCompletion(requestAI);
+
+                if (aiResponse.Choices != null && aiResponse.Choices.Count > 0)
                 {
-                    var chatResponse = responseR.Choices[0].Message;
-                    messages.Add(chatResponse);
-
-                    Debug.Log(chatResponse.Content);
+                    var chatResponse = aiResponse.Choices[0].Message;
+                    string text = chatResponse.Content;
+                    //todo: send to poly to speak it
+                    messages.Add(text);
+                    conversationMode = true
                 }
-
             }
 
-            else if (messages.Count % 10 == 0)
+            else if (messages.Count >= 1 && conversationMode)
             {
-                newMessage.Content = scorePrompt;
-                messages.Add(newMessage);
-
+                
+                var answer = transcribedText;
+                messages.Add(answer);
+                var conversationHistory = messages.Skip(Math.Max(0, messages.Length - 2));
+                var fullPrompt =  "Conversation: " + conversationHistory + scorePrompt
+                newMessage.Content = fullPrompt;
+        
                 CreateChatCompletionRequest requestR = new CreateChatCompletionRequest();
                 requestR.Messages = messages;
                 requestR.Model = "gpt-3.5-turbo";
@@ -152,11 +187,33 @@ namespace Samples.Whisper
                 if (responseR.Choices != null && responseR.Choices.Count > 0)
                 {
                     var chatResponse = responseR.Choices[0].Message;
-                    messages.Add(chatResponse);
-
+                    string text = chatResponse.Content;
                     Debug.Log(chatResponse.Content);
-                }
 
+                    // En este lugar se llama al task para extraer el número e imprimirlo en la consola
+                    int rating = await ExtractRatingFromResponse(text);
+                    if (rating == -1) {
+                        if (scores.Count >= 1) { 
+                            rating = score.Average()
+                        } 
+                        else {
+                            rating = 1
+                        }
+                    }
+                    scores.Add(rating)
+                    if (scores.Last() >= 7) {
+                        conversationMode = false
+                        askAgain = false
+                        messages.Clear()
+                        //todo: add progress to drawing
+                    }
+                    else {
+                        askAgain = true
+                        //todo: hacer nueva pregunta
+                    }
+                    //todo: send score to girl
+                    Debug.Log("Calificación obtenida: " + scores.Last());
+                }
             }
 
             messages.Add(newMessage);
@@ -174,8 +231,6 @@ namespace Samples.Whisper
                 string text = chatResponse.Content;
 
                 Debug.Log("este es el texto " + text);
-
-
 
                 messages.Add(chatResponse);
 
@@ -204,4 +259,4 @@ namespace Samples.Whisper
             }
         }
     }
-}
+}   
