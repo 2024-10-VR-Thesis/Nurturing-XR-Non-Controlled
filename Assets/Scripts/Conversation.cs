@@ -1,16 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Scripts.Conversation
 {
-    public class Conversation : MonoBehaviour
+    public sealed class Conversation : MonoBehaviour
 {
-        private bool talking { get; set; }
-        private bool listening { get; set; }
-        private bool drawing {  get; set; } 
-        private bool playing {  get; set; }
-        private int drawingPhase { get; set; }
+        public static Conversation instance;
+        public bool talking { get; set; }
+        public bool listening { get; set; }
+        public bool drawing {  get; set; } 
+        public bool playing {  get; set; }
+        public int drawingPhase { get; set; }
+
+        private Conversation()
+        {
+        }
+
+        public static Conversation Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new Conversation();
+                }
+                return instance;
+            }
+        }
+
 
         void Start()
         {
@@ -26,7 +45,7 @@ namespace Scripts.Conversation
 
         void StartGame()
         {
-            talking = true;
+            talking = true; playing = true; drawingPhase = 0;
             //TODO: Play the Intro, set Polly message (delay 3.000), Show the instructions
             //User regulates interaction. Set First prompt after finishing intro
         }

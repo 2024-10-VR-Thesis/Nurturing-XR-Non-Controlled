@@ -11,6 +11,9 @@ using UnityEngine.UI;
 using Scripts.TexToSpeech;
 using Amazon;
 using System.Text.RegularExpressions;
+using System.Linq;
+using System;
+using Unity.VisualScripting;
 
 namespace Samples.Whisper
 {
@@ -30,7 +33,7 @@ namespace Samples.Whisper
         private OpenAIApi openai = new OpenAIApi();
         private OpenAIApi openAI = new OpenAIApi();
         private List<ChatMessage> messages = new List<ChatMessage>();
-        private string prompt = "Act as 5 y/o child. Dont break character. Dont ever mention you are an AI model. You are going to create an imaginative question based on an object or a previous conversation, just the question";
+        private string prompt = "Act as 5 y/o child. Dont break character. Dont ever mention you are an AI model. You are going to create an imaginative question based on an object or an answer, just the question. ";
         private string scorePrompt = "Score our conversation from 1-10, dont write words just the score based on a child psichology pov";
         private List<int> scores = new List<int>();
         public TextToSpeech tts;
@@ -39,9 +42,9 @@ namespace Samples.Whisper
 
 
         private void Start() {
+            /*
             #if UNITY_WEBGL && !UNITY_EDITOR
                         dropdown.options.Add(new Dropdown.OptionData("Microphone not supported on WebGL"));
-            /*
             #else
                         foreach (var device in Microphone.devices)
                         {
@@ -54,6 +57,7 @@ namespace Samples.Whisper
                         dropdown.SetValueWithoutNotify(index);
             #endif
             */
+            GenerateImaginativeQuestion("Pillow");
         }
 
         private void ChangeMicrophone(int index)
@@ -128,24 +132,23 @@ namespace Samples.Whisper
         private async Task GenerateImaginativeQuestion(string transcribedText) //no es necesariamente transcripcion, tambien es objeto
         {
             ChatMessage newMessage = new ChatMessage();
-            newMessage.Content = transcribedText;
+            //newMessage.Content = transcribedText;
             newMessage.Role = "user";
 
             if (messages.Count == 0 || askAgain)
             {
                 var fullPrompt = prompt;
                 if (askAgain) {
-                    messages.Add(transcribedText);
-                    var conversationHistory = messages.Skip(Math.Max(0, messages.Length - 2));
-                    fullPrompt +=  "Conversation: " + conversationHistory;
+                    var answer = transcribedText;
+                    fullPrompt += "Answer: " + answer;
                 }
                 else {
-                    var object = transcribedText;
-                    fullPrompt += "Object: " + object;
+                    var objeto = transcribedText;
+                    fullPrompt += "Object: " + objeto;
                 }
-                
+
                 newMessage.Content = fullPrompt;
-                //messages.Add(newMessage);
+                messages.Add(newMessage);
 
                 CreateChatCompletionRequest requestR = new CreateChatCompletionRequest();
                 requestR.Messages = messages;
@@ -162,20 +165,19 @@ namespace Samples.Whisper
                 if (aiResponse.Choices != null && aiResponse.Choices.Count > 0)
                 {
                     var chatResponse = aiResponse.Choices[0].Message;
+                    messages.Add(chatResponse);
                     string text = chatResponse.Content;
+                    print(text);
                     //todo: send to poly to speak it
-                    messages.Add(text);
-                    conversationMode = true
+                    conversationMode = true;
                 }
             }
 
             else if (messages.Count >= 1 && conversationMode)
             {
-                
+                var fullPrompt = scorePrompt;
                 var answer = transcribedText;
-                messages.Add(answer);
-                var conversationHistory = messages.Skip(Math.Max(0, messages.Length - 2));
-                var fullPrompt =  "Conversation: " + conversationHistory + scorePrompt
+                fullPrompt += "Answer given to last question:" + answer;
                 newMessage.Content = fullPrompt;
         
                 CreateChatCompletionRequest requestR = new CreateChatCompletionRequest();
@@ -193,22 +195,23 @@ namespace Samples.Whisper
                     // En este lugar se llama al task para extraer el número e imprimirlo en la consola
                     int rating = await ExtractRatingFromResponse(text);
                     if (rating == -1) {
-                        if (scores.Count >= 1) { 
-                            rating = score.Average()
+                        if (scores.Count >= 1) {
+                            List<double> provisional = scores.Select(x => (double)x).ToList();
+                            rating = (int)Math.Floor(provisional.Average());
                         } 
                         else {
-                            rating = 1
+                            rating = 1;
                         }
                     }
-                    scores.Add(rating)
+                    scores.Add(rating);
                     if (scores.Last() >= 7) {
-                        conversationMode = false
-                        askAgain = false
-                        messages.Clear()
+                        conversationMode = false;
+                        askAgain = false;
+                        messages.Clear();
                         //todo: add progress to drawing
                     }
                     else {
-                        askAgain = true
+                        askAgain = true;
                         //todo: hacer nueva pregunta
                     }
                     //todo: send score to girl
@@ -216,7 +219,10 @@ namespace Samples.Whisper
                 }
             }
 
+            print(newMessage.Content);
             messages.Add(newMessage);
+
+            /*
 
             CreateChatCompletionRequest request = new CreateChatCompletionRequest();
             request.Messages = messages;
@@ -239,7 +245,7 @@ namespace Samples.Whisper
             int index = messages.Count - 1;
             tts.setSpeak(messages[index].Content);
             tts.texttospeech();
-
+            */
         }
 
 
