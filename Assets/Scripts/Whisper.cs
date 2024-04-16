@@ -168,6 +168,7 @@ namespace Samples.Whisper
                     messages.Add(chatResponse);
                     string text = chatResponse.Content;
                     print(text);
+                    tts.texttospeech(text);
                     //todo: send to poly to speak it
                     conversationMode = true;
                 }

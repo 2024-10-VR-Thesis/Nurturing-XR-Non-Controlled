@@ -16,34 +16,36 @@ namespace Scripts.TexToSpeech
     public class TextToSpeech : MonoBehaviour
 {
     [SerializeField] private AudioSource audioSource;
-    public string speak;
+    public string introSpeak;
 
     void Start()
     {
         string path = "Assets/Static speech/tutorial.json";
         string jsonString = File.ReadAllText(path);
         TextToSpeechData data = JsonUtility.FromJson<TextToSpeechData>(jsonString);
-        speak = data.EN;
-        texttospeech();
+        introSpeak = data.EN;
+        texttospeech(introSpeak);
+        //introSpeak = null;
     }
 
     void Update()
     {
-
     }
 
     public void setSpeak(string text)
     {
         Debug.Log("Entro");
-        speak = text;
+        introSpeak = text;
     }
 
-    public async void texttospeech( )
+    public async void texttospeech(string speak)
     {
+        string speechCopy = speak;
+        speak = null;
         Debug.Log("dice");
         var request = new SynthesizeSpeechRequest()
         {
-            Text = speak,
+            Text = speechCopy,
             Engine = Engine.Neural,
             VoiceId = VoiceId.Ivy,
             OutputFormat = OutputFormat.Mp3
@@ -60,7 +62,6 @@ namespace Scripts.TexToSpeech
             audioSource.clip = clip;
             audioSource.Play();
         }
-        speak = "";
     }
 
     private void WriteintoFile(Stream stream)
