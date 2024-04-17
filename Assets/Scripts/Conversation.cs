@@ -8,6 +8,7 @@ namespace Scripts.Conversation
     public sealed class Conversation : MonoBehaviour
 {
         public static Conversation instance;
+        [SerializeField] public Behaviour tutorialCanvas;
         public bool talking { get; set; }
         public bool listening { get; set; }
         public bool drawing {  get; set; } 
@@ -46,7 +47,13 @@ namespace Scripts.Conversation
         void StartGame()
         {
             talking = true; playing = true; drawingPhase = 0;
+
             //TODO: Play the Intro, set Polly message (delay 3.000), Show the instructions
+
+            tutorialCanvas.enabled = true;
+
+            Debug.Log("Entro");
+
             //User regulates interaction. Set First prompt after finishing intro
         }
 
