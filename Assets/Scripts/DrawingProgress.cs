@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Drawing : MonoBehaviour
+public class DrawingProgress: MonoBehaviour
 {
 
     public GameObject[] drawings;

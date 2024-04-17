@@ -15,4 +15,4 @@ MonoBehaviour:
   Subdomain: im-building-a-xr-project
   AppId: 65ef0d413f3494050d61f54c
   EnableLogging: 0
-  EnableAnalytics: 1
+  EnableAnalytics: 0

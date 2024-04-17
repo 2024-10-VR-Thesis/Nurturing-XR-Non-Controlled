@@ -1,21 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class AudioManager : MonoBehaviour
+public class DestroyObject : MonoBehaviour
 {
-    [SerializeField] AudioSource musicSource;
-    public AudioClip backgroundMusic;
     // Start is called before the first frame update
     void Start()
     {
-        musicSource.clip = backgroundMusic;
-        musicSource.Play();
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        Destroy(this.gameObject, 10f);
     }
 }
