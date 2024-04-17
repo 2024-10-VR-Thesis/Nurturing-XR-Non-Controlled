@@ -14,6 +14,9 @@ public class DestroyObject : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Destroy(this.gameObject, 10f);
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Destroy(this.gameObject);
+        }
     }
 }
