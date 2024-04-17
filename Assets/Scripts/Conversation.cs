@@ -13,8 +13,10 @@ namespace Scripts.Conversation
         public bool drawing {  get; set; } 
         public bool playing {  get; set; }
         public int drawingPhase { get; set; }
+        public int bad_v   { get; set; }
+        public int soBad_v { get; set; }
 
-        private Conversation()
+private Conversation()
         {
         }
 
