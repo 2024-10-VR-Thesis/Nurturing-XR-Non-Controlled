@@ -33,12 +33,14 @@ namespace Samples.Whisper
         private OpenAIApi openai = new OpenAIApi();
         private OpenAIApi openAI = new OpenAIApi();
         private List<ChatMessage> messages = new List<ChatMessage>();
-        private string prompt = "Act as 5 y/o child. Dont break character. Dont ever mention you are an AI model. You are going to create an imaginative question based on an object or an answer, just the question. ";
-        private string scorePrompt = "Score our conversation from 1-10, dont write words just the score based on a child psichology pov";
+        private string prompt = "Act as 5 y/o child. Dont break character. Dont ever mention you are an AI model. You are going to create an imaginative question based on an object or a previous answer, just the question. ";
+        private string scorePrompt = "Score the answer given to this question from 1-10, dont write words just the score based on a 5 y/o child pov and if the answer and question are in the same context. ";
         private List<int> scores = new List<int>();
         public TextToSpeech tts;
         private bool conversationMode = false; //todo: va en la clase de semaforo
         private bool askAgain = false; //todo: va en la clase de semaforo
+        private CreateChatCompletionRequest requestAI;
+        private String question;
 
 
         private void Start() {
@@ -58,6 +60,7 @@ namespace Samples.Whisper
             #endif
             */
             GenerateImaginativeQuestion("Pillow");
+
         }
 
         private void ChangeMicrophone(int index)
@@ -134,13 +137,12 @@ namespace Samples.Whisper
             ChatMessage newMessage = new ChatMessage();
             //newMessage.Content = transcribedText;
             newMessage.Role = "user";
-
             if (messages.Count == 0 || askAgain)
             {
                 var fullPrompt = prompt;
                 if (askAgain) {
                     var answer = transcribedText;
-                    fullPrompt += "Answer: " + answer;
+                    fullPrompt += "Previous answer: " + answer;
                 }
                 else {
                     var objeto = transcribedText;
@@ -149,16 +151,11 @@ namespace Samples.Whisper
 
                 newMessage.Content = fullPrompt;
                 messages.Add(newMessage);
+                Debug.Log(messages);
 
-                CreateChatCompletionRequest requestR = new CreateChatCompletionRequest();
-                requestR.Messages = messages;
-                requestR.Model = "gpt-3.5-turbo";
-
-                CreateChatCompletionRequest requestAI = new CreateChatCompletionRequest();
+                requestAI = new CreateChatCompletionRequest();
                 requestAI.Messages = messages;
                 requestAI.Model = "gpt-3.5-turbo";
-
-                var responseR = await openAI.CreateChatCompletion(requestR);
 
                 var aiResponse = await openAI.CreateChatCompletion(requestAI);
 
@@ -168,24 +165,22 @@ namespace Samples.Whisper
                     messages.Add(chatResponse);
                     string text = chatResponse.Content;
                     print(text);
+                    question = text;
                     tts.texttospeech(text);
-                    //todo: send to poly to speak it
-                    conversationMode = true;
+                    conversationMode = true;              
                 }
             }
 
-            else if (messages.Count >= 1 && conversationMode)
+            if (messages.Count >= 1 && conversationMode)
             {
                 var fullPrompt = scorePrompt;
-                var answer = transcribedText;
-                fullPrompt += "Answer given to last question:" + answer;
+                var answer = "You can not fly";
+                fullPrompt += "Question: " + question + ".Answer: " + answer;
                 newMessage.Content = fullPrompt;
-        
-                CreateChatCompletionRequest requestR = new CreateChatCompletionRequest();
-                requestR.Messages = messages;
-                requestR.Model = "gpt-3.5-turbo";
 
-                var responseR = await openAI.CreateChatCompletion(requestR);
+                messages.Add(newMessage);
+        
+                var responseR = await openAI.CreateChatCompletion(requestAI);
 
                 if (responseR.Choices != null && responseR.Choices.Count > 0)
                 {
