@@ -8,7 +8,7 @@ public class DrawingProgress: MonoBehaviour
     public GameObject[] drawings;
     public float spawnInterval = 5f;
     private float timer = 0f;
-    private int index = 0;
+    private int index = -1;
     private bool create = false;
 
     void Start()
@@ -18,7 +18,7 @@ public class DrawingProgress: MonoBehaviour
 
     void Update()
     {
-        timer += Time.deltaTime;
+        /* timer += Time.deltaTime;
         print(timer);
 
         if (timer >= spawnInterval)
@@ -36,7 +36,12 @@ public class DrawingProgress: MonoBehaviour
                 drawings[index].SetActive(true);
                 index += 1;
             }
-        }
+        } */
+        if (index < drawings.Length)
+            {
+                drawings[index].SetActive(true);
+                index += 1;
+            }
     }
 
     void DisableObjects()
