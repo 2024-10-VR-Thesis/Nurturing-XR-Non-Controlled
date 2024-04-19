@@ -1,81 +1,47 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Samples.Whisper;
-using Scripts.TexToSpeech;
+using Scripts.Conversation;
 using UnityEngine.SocialPlatforms.Impl;
 
 
 public class AnimationsHandler : MonoBehaviour
 {
     Animator anim;
+    Conversation conversation;
     
     bool isRecording;
     bool isTalking;
-    string rating;
-
-    Whisper whisper;
-    TextToSpeech speech;   
+    int rating;
 
     void Start()
     {
         anim = this.GetComponent<Animator>();
-        rating = GetComponent<string>();
-        //isRecording = whisper.getRecordingState();
-        //isTalking = speech.talking;
+        rating = GetComponent<int>();
+        conversation = GetComponent<Conversation>();
     }
 
     private void setRating()
     {
-        if(isRecording) { rating = "Listening"; }
-        if(isTalking) { rating = "Talking"; }
-        if( int.Parse(rating) < 4 ) { rating = "So Bad Answer"; }
-        if( int.Parse(rating) < 7 ) { rating = "Bad Answer"; }
-        if( int.Parse(rating) >= 7 ) { rating = "Good Answer"; }
+        if(rating > 7) {
+            if (conversation.soBad_v > 0)
+            {
+                conversation.soBad_v--;
+            } else if (conversation.bad_v > 0)
+            {
+                conversation.bad_v--;
+            }
+        } else if (rating < 4) {
+            conversation.soBad_v++;
+        } else
+        {
+            conversation.bad_v++;
+        }
+
     }
-        
+
     void Update()
     {
         setRating();
-        if(rating == "Good Answer")
-        {
-            anim.SetBool("Talking",         false);
-            anim.SetBool("Listening",       false);
-            anim.SetBool("Good Answer",     true);
-            anim.SetBool("Bad Answer",      false);
-            anim.SetBool("So Bad Answer",   false);
-        }
-        if (rating == "Bad Answer")
-        {
-            anim.SetBool("Talking",         false);
-            anim.SetBool("Listening",       false);
-            anim.SetBool("Good Answer",     false);
-            anim.SetBool("Bad Answer",      true);
-            anim.SetBool("So Bad Answer",   false);
-        }
-        if (rating == "So Bad Answer")
-        {
-            anim.SetBool("Talking",         false);
-            anim.SetBool("Listening",       false);
-            anim.SetBool("Good Answer",     false);
-            anim.SetBool("Bad Answer",      false);
-            anim.SetBool("So Bad Answer",   true);
-        }
-        if (rating == "Talking")
-        {
-            anim.SetBool("Talking",         true);
-            anim.SetBool("Listening",       false);
-            anim.SetBool("Good Answer",     false);
-            anim.SetBool("Bad Answer",      false);
-            anim.SetBool("So Bad Answer",   false);
-        }
-        if (rating == "Listening")
-        {
-            anim.SetBool("Talking",         false);
-            anim.SetBool("Listening",       true);
-            anim.SetBool("Good Answer",     false);
-            anim.SetBool("Bad Answer",      false);
-            anim.SetBool("So Bad Answer",   false);
-        }
     }
 }
