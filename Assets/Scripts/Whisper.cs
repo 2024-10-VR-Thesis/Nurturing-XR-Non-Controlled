@@ -19,10 +19,7 @@ namespace Samples.Whisper
 {
     public class Whisper : MonoBehaviour
     {
-        [SerializeField] private Button recordButton;
-        [SerializeField] private Image progressBar;
         [SerializeField] private Text message;
-        [SerializeField] private Dropdown dropdown;
 
         private readonly string fileName = "output.wav";
         private readonly int duration = 5;
@@ -44,45 +41,23 @@ namespace Samples.Whisper
 
 
         private void Start() {
-            /*
-            #if UNITY_WEBGL && !UNITY_EDITOR
-                        dropdown.options.Add(new Dropdown.OptionData("Microphone not supported on WebGL"));
-            #else
-                        foreach (var device in Microphone.devices)
-                        {
-                            dropdown.options.Add(new Dropdown.OptionData(device));
-                        }
-                        recordButton.onClick.AddListener(StartRecording);
-                        dropdown.onValueChanged.AddListener(ChangeMicrophone);
 
-                        var index = PlayerPrefs.GetInt("user-mic-device-index");
-                        dropdown.SetValueWithoutNotify(index);
-            #endif
-            */
-            GenerateImaginativeQuestion("Pillow");
+            //GenerateImaginativeQuestion("Pillow");
 
-        }
-
-        private void ChangeMicrophone(int index)
-        {
-            PlayerPrefs.SetInt("user-mic-device-index", index);
+            Debug.Log("Inicio");
         }
 
         private void StartRecording()
         {
             isRecording = true;
-            recordButton.enabled = false;
-
-            var index = PlayerPrefs.GetInt("user-mic-device-index");
 
             #if !UNITY_WEBGL
-                        clip = Microphone.Start(dropdown.options[index].text, false, duration, 44100);
+                        clip = Microphone.Start(Microphone.devices[0], false, duration, 44100);
             #endif
-                    }
+        }
 
-                    private async void EndRecording()
-                    {
-                        message.text = "Transcripting...";
+        private async void EndRecording()
+        {
 
             #if !UNITY_WEBGL
                         Microphone.End(null);
@@ -95,13 +70,11 @@ namespace Samples.Whisper
 
 
             // Enviar la transcripción a ChatGPT para obtener la pregunta imaginativa
-            Debug.Log(transcribedText);
             await GenerateImaginativeQuestion(transcribedText);
 
 
             // Restablecer la UI
-            progressBar.fillAmount = 0;
-            recordButton.enabled = true;
+            //progressBar.fillAmount = 0;
         }
 
         private async Task<string> GetAudioTranscription(byte[] audioData)
@@ -114,6 +87,7 @@ namespace Samples.Whisper
             };
 
             var res = await openai.CreateAudioTranscription(req);
+            Debug.Log(res.Text);
             return res.Text;
         }
 
@@ -247,17 +221,15 @@ namespace Samples.Whisper
 
         private void Update()
         {
-            if (isRecording)
+            if (Input.GetKeyDown(KeyCode.T))
             {
-                time += Time.deltaTime;
-                progressBar.fillAmount = time / duration;
-
-                if (time >= duration)
-                {
-                    time = 0;
-                    isRecording = false;
-                    EndRecording();
-                }
+                Debug.Log("Tecla T presionada");
+                StartRecording();
+            }
+            else if (Input.GetKeyUp(KeyCode.T))
+            {
+                Debug.Log("Tecla T no presionada");
+                EndRecording();           
             }
         }
     }

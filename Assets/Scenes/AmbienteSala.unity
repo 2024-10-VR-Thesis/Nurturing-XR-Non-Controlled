@@ -5969,7 +5969,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2064052750837201088}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1bf4ff6de4560d44d9b3b0697e00c1b8, type: 3}
   m_Name: 
@@ -6094,15 +6094,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2064052750837201088}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a50c06d6aa656da4a97fe6e4669896bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  recordButton: {fileID: 0}
-  progressBar: {fileID: 0}
   message: {fileID: 0}
-  dropdown: {fileID: 0}
   tts: {fileID: 7114813101156430301}
 --- !u!1001 &8134418032668716612
 PrefabInstance:
