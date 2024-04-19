@@ -200,7 +200,7 @@ namespace Samples.Whisper
                 Debug.Log("Calificación obtenida: " + scores.Last());
 
                 print(newMessage.Content);
-                messages.Add(newMessage);
+                //messages.Add(newMessage);
 
                 /*
 
