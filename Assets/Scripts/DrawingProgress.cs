@@ -46,4 +46,9 @@ public class DrawingProgress: MonoBehaviour
             obj.SetActive(false);
         }
     }
+
+    void increaseIndex()
+    {
+        index += 1;
+    }
 }
