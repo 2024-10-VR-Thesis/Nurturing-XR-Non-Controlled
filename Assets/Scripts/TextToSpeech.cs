@@ -10,7 +10,6 @@ using UnityEngine;
 using UnityEngine.Networking;
 using Newtonsoft.Json.Linq;
 using Unity.VisualScripting;
-using Scripts.Conversation;
 
 namespace Scripts.TexToSpeech
 {
@@ -18,7 +17,8 @@ namespace Scripts.TexToSpeech
 {
     [SerializeField] private AudioSource audioSource;
     public string introSpeak;
-    public Conversation.Conversation Conversation;
+    public Conversation.Conversation conversation;
+    public AnimationsHandler animationsHandler;
 
     void Start()
     {
@@ -64,9 +64,9 @@ namespace Scripts.TexToSpeech
             audioSource.clip = clip;
             audioSource.Play();
 
-            Conversation.talking = true;
+            conversation.talking = true;            
             await Task.Delay((int)(clip.length * 1000)); // Convert clip length from seconds to milliseconds
-            Conversation.talking = false;
+            conversation.talking = false;
             }
     }
 

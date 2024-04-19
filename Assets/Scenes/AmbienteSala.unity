@@ -5962,6 +5962,14 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 7114813101156430308}
+    - targetCorrespondingSourceObject: {fileID: 4854502144122983845, guid: 9a580931bf234b34f94ac8c485f36e3e,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7114813101156430313}
+    - targetCorrespondingSourceObject: {fileID: 4854502144122983845, guid: 9a580931bf234b34f94ac8c485f36e3e,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7114813101156430314}
   m_SourcePrefab: {fileID: 100100000, guid: 9a580931bf234b34f94ac8c485f36e3e, type: 3}
 --- !u!114 &7114813101156430299
 MonoBehaviour:
@@ -5970,7 +5978,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2064052750837201088}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1bf4ff6de4560d44d9b3b0697e00c1b8, type: 3}
   m_Name: 
@@ -5985,13 +5993,15 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2064052750837201088}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 760f20e4cd96f6349b51b7e4815cee29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   audioSource: {fileID: 7114813101156430302}
   introSpeak: 
+  conversation: {fileID: 7114813101156430314}
+  animationsHandler: {fileID: 7114813101156430313}
 --- !u!82 &7114813101156430302
 AudioSource:
   m_ObjectHideFlags: 0
@@ -5999,7 +6009,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2064052750837201088}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
@@ -6095,7 +6105,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2064052750837201088}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a50c06d6aa656da4a97fe6e4669896bf, type: 3}
   m_Name: 
@@ -6103,7 +6113,32 @@ MonoBehaviour:
   message: {fileID: 0}
   scores: 
   tts: {fileID: 7114813101156430301}
+  animationsHandler: {fileID: 7114813101156430313}
   drawingProgress: {fileID: 635812935}
+--- !u!114 &7114813101156430313
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2064052750837201088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69606b4fe881e9b4e8bbd31d0088eb54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7114813101156430314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2064052750837201088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05b8699b3348d74499e09a93319b34be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8134418032668716612
 PrefabInstance:
   m_ObjectHideFlags: 0

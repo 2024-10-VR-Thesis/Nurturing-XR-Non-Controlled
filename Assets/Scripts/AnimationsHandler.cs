@@ -7,11 +7,12 @@ using Samples.Whisper;
 using System.Linq;
 
 
-public class AnimationsHandler : MonoBehaviour
+
+    public class AnimationsHandler : MonoBehaviour
 {
     Animator anim;
-    Conversation conversation;
     Whisper Whisper;
+    Conversation conversation;
     
     bool isRecording;
     bool isTalking;
@@ -21,10 +22,14 @@ public class AnimationsHandler : MonoBehaviour
     {
         anim = this.GetComponent<Animator>();
         conversation = GetComponent<Conversation>();
+
     }
 
     public void setRating(int rating)
     {
+
+
+
         if (rating >= 7) {
             if (conversation.soBad_v > 0)
             {
@@ -52,5 +57,7 @@ public class AnimationsHandler : MonoBehaviour
         anim.SetBool("Listening", conversation.listening);
     }
 
-    void Update(){}
+    void Update(){
+        setBooleans();
+    }
 }
