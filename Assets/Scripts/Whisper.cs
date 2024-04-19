@@ -9,6 +9,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 using Scripts.TexToSpeech;
+using Scripts.DrawingProgress;
 using Amazon;
 using System.Text.RegularExpressions;
 using System.Linq;
@@ -32,17 +33,19 @@ namespace Samples.Whisper
         private List<ChatMessage> messages = new List<ChatMessage>();
         private string prompt = "Act as 5 y/o child. Dont break character. Dont ever mention you are an AI model. You are going to create an imaginative question based on an object or a previous answer, just the question. ";
         private string scorePrompt = "Score the answer given to this question from 1-10, dont write words just the score based on a 5 y/o child pov and if the answer and question are in the same context. ";
-        private List<int> scores = new List<int>();
+        public List<int> scores = new List<int>();
         public TextToSpeech tts;
-        private bool conversationMode = false; //todo: va en la clase de semaforo
         private bool askAgain = false; //todo: va en la clase de semaforo
         private CreateChatCompletionRequest requestAI;
         private String question;
+        public DrawingProgress drawingProgress;
 
 
-        private void Start() {
+        private void Start()
+        {
 
-            //GenerateImaginativeQuestion("Pillow");
+            GenerateImaginativeQuestion("Pillow");
+            //drawingProgress = GetComponent<DrawingProgress>();
 
             Debug.Log("Inicio");
         }
@@ -51,17 +54,17 @@ namespace Samples.Whisper
         {
             isRecording = true;
 
-            #if !UNITY_WEBGL
-                        clip = Microphone.Start(Microphone.devices[0], false, duration, 44100);
-            #endif
+#if !UNITY_WEBGL
+            clip = Microphone.Start(Microphone.devices[0], false, duration, 44100);
+#endif
         }
 
         private async void EndRecording()
         {
 
-            #if !UNITY_WEBGL
-                        Microphone.End(null);
-            #endif
+#if !UNITY_WEBGL
+            Microphone.End(null);
+#endif
 
             byte[] data = SaveWav.Save(fileName, clip);
 
@@ -101,8 +104,8 @@ namespace Samples.Whisper
                 return int.Parse(match.Value);
             }
             else
-            { 
-                return -1 ; //Si no se encuentra un número en el comentario se devuelve -1 por lo que no se imprime en consola
+            {
+                return -1; //Si no se encuentra un número en el comentario se devuelve -1 por lo que no se imprime en consola
             }
         }
 
@@ -113,17 +116,19 @@ namespace Samples.Whisper
             newMessage.Role = "user";
             if (messages.Count == 0 || askAgain)
             {
-                var fullPrompt = prompt;
-                if (askAgain) {
-                    var answer = transcribedText;
-                    fullPrompt += "Previous answer: " + answer;
+                var questionPrompt = prompt;
+                if (askAgain)
+                {
+                    var previousAnswer = transcribedText;
+                    questionPrompt += "Previous answer: " + previousAnswer;
                 }
-                else {
+                else
+                {
                     var objeto = transcribedText;
-                    fullPrompt += "Object: " + objeto;
+                    questionPrompt += "Object: " + objeto;
                 }
 
-                newMessage.Content = fullPrompt;
+                newMessage.Content = questionPrompt;
                 messages.Add(newMessage);
                 Debug.Log(messages);
 
@@ -138,98 +143,104 @@ namespace Samples.Whisper
                     var chatResponse = aiResponse.Choices[0].Message;
                     messages.Add(chatResponse);
                     string text = chatResponse.Content;
-                    print(text);
+                    print("question" + text);
                     question = text;
                     tts.texttospeech(text);
-                    conversationMode = true;              
                 }
             }
 
-            if (messages.Count >= 1 && conversationMode)
-            {
-                var fullPrompt = scorePrompt;
-                var answer = "You can not fly";
-                fullPrompt += "Question: " + question + ".Answer: " + answer;
-                newMessage.Content = fullPrompt;
+            var fullScorePrompt = scorePrompt;
+            var answer = "i hate you"; // todo: call stt
+            fullScorePrompt += "Question: " + question + ".Answer: " + answer;
+            newMessage.Content = fullScorePrompt;
 
-                messages.Add(newMessage);
-        
-                var responseR = await openAI.CreateChatCompletion(requestAI);
-
-                if (responseR.Choices != null && responseR.Choices.Count > 0)
-                {
-                    var chatResponse = responseR.Choices[0].Message;
-                    string text = chatResponse.Content;
-                    Debug.Log(chatResponse.Content);
-
-                    // En este lugar se llama al task para extraer el número e imprimirlo en la consola
-                    int rating = await ExtractRatingFromResponse(text);
-                    if (rating == -1) {
-                        if (scores.Count >= 1) {
-                            List<double> provisional = scores.Select(x => (double)x).ToList();
-                            rating = (int)Math.Floor(provisional.Average());
-                        } 
-                        else {
-                            rating = 1;
-                        }
-                    }
-                    scores.Add(rating);
-                    if (scores.Last() >= 7) {
-                        conversationMode = false;
-                        askAgain = false;
-                        messages.Clear();
-                        //todo: add progress to drawing
-                    }
-                    else {
-                        askAgain = true;
-                        //todo: hacer nueva pregunta
-                    }
-                    //todo: send score to girl
-                    Debug.Log("Calificación obtenida: " + scores.Last());
-                }
-            }
-
-            print(newMessage.Content);
             messages.Add(newMessage);
+            requestAI.Messages = messages;
+            requestAI.Model = "gpt-3.5-turbo";
 
-            /*
+            var responseR = await openAI.CreateChatCompletion(requestAI);
 
-            CreateChatCompletionRequest request = new CreateChatCompletionRequest();
-            request.Messages = messages;
-            request.Model = "gpt-3.5-turbo";
-
-            var response = await openAI.CreateChatCompletion(request);
-
-            if (response.Choices != null && response.Choices.Count > 0)
+            if (responseR.Choices != null && responseR.Choices.Count > 0)
             {
-                var chatResponse = response.Choices[0].Message;
-
+                var chatResponse = responseR.Choices[0].Message;
                 string text = chatResponse.Content;
+               
 
-                Debug.Log("este es el texto " + text);
+                // En este lugar se llama al task para extraer el número e imprimirlo en la consola
+                int rating = await ExtractRatingFromResponse(text);
+                print("score:" + rating);
+                if (rating == -1)
+                {
+                    if (scores.Count >= 1)
+                    {
+                        List<double> provisional = scores.Select(x => (double)x).ToList();
+                        rating = (int)Math.Floor(provisional.Average());
+                    }
+                    else
+                    {
+                        rating = 1;
+                    }
+                }
+                scores.Add(rating);
 
-                messages.Add(chatResponse);
+                if (scores.Last() >= 7)
+                {
+                    askAgain = false;
+                    drawingProgress.increaseIndex();
+                    return;
+                }
+                else
+                {
+                    askAgain = true;
+                    GenerateImaginativeQuestion(answer);
+                
+                    //todo: hacer nueva pregunta
+                }
+                //todo: send score to girl
+                Debug.Log("Calificación obtenida: " + scores.Last());
 
-                Debug.Log(chatResponse.Content);
+                print(newMessage.Content);
+                messages.Add(newMessage);
+
+                /*
+
+                CreateChatCompletionRequest request = new CreateChatCompletionRequest();
+                request.Messages = messages;
+                request.Model = "gpt-3.5-turbo";
+
+                var response = await openAI.CreateChatCompletion(request);
+
+                if (response.Choices != null && response.Choices.Count > 0)
+                {
+                    var chatResponse = response.Choices[0].Message;
+
+                    string text = chatResponse.Content;
+
+                    Debug.Log("este es el texto " + text);
+
+                    messages.Add(chatResponse);
+
+                    Debug.Log(chatResponse.Content);
+                }
+                int index = messages.Count - 1;
+                tts.setSpeak(messages[index].Content);
+                tts.texttospeech();
+                */
             }
-            int index = messages.Count - 1;
-            tts.setSpeak(messages[index].Content);
-            tts.texttospeech();
-            */
-        }
 
 
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.T))
+            void Update()
             {
-                Debug.Log("Tecla T presionada");
-                StartRecording();
-            }
-            else if (Input.GetKeyUp(KeyCode.T))
-            {
-                Debug.Log("Tecla T no presionada");
-                EndRecording();           
+                if (Input.GetKeyDown(KeyCode.T))
+                {
+                    Debug.Log("Tecla T presionada");
+                    StartRecording();
+                }
+                else if (Input.GetKeyUp(KeyCode.T))
+                {
+                    Debug.Log("Tecla T no presionada");
+                    EndRecording();
+                }
             }
         }
     }

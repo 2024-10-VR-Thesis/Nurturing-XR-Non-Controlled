@@ -30,11 +30,12 @@ public class MinuteHandMovement : MonoBehaviour
             transform.RotateAround(pivotPoint.position, Vector3.left, rotationSpeed * Time.deltaTime);
             elapsedTime += Time.deltaTime;
         }
+        /*
         else
         {
             conversation.playing = false;
         }
-
+        */
     }
 
 

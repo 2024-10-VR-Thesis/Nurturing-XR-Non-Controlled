@@ -2,58 +2,62 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DrawingProgress: MonoBehaviour
+namespace Scripts.DrawingProgress
 {
-
-    public GameObject[] drawings;
-    public float spawnInterval = 5f;
-    private float timer = 0f;
-    private int index = -1;
-    private bool create = false;
-
-    void Start()
+    public class DrawingProgress : MonoBehaviour
     {
-        DisableObjects();
-    }
 
-    void Update()
-    {
-        /* timer += Time.deltaTime;
-        print(timer);
+        public GameObject[] drawings;
+        public float spawnInterval = 5f;
+        private float timer = 0f;
+        public int index;
+        private bool create = false;
 
-        if (timer >= spawnInterval)
+        void Start()
         {
-            // TODO: set create according to acceptance of replies
-            create = true;
-            timer = 0f; // Reset the timer
+            DisableObjects();
+            index = -1;
         }
 
-        if (create)
+        void Update()
         {
-            create = false;
-            if (index < drawings.Length)
-            {
-                drawings[index].SetActive(true);
-                index += 1;
-            }
-        } */
-        if (index < drawings.Length)
-            {
-                drawings[index].SetActive(true);
-                index += 1;
-            }
-    }
+            /* timer += Time.deltaTime;
+            print(timer);
 
-    void DisableObjects()
-    {
-        foreach (GameObject obj in drawings)
-        {
-            obj.SetActive(false);
+            if (timer >= spawnInterval)
+            {
+                // TODO: set create according to acceptance of replies
+                create = true;
+                timer = 0f; // Reset the timer
+            }
+
+            if (create)
+            {
+                create = false;
+                if (index < drawings.Length)
+                {
+                    drawings[index].SetActive(true);
+                    index += 1;
+                }
+            } */
+            if (index != -1 && index < drawings.Length)
+            {
+                drawings[index].SetActive(true);
+            }
         }
-    }
 
-    void increaseIndex()
-    {
-        index += 1;
+        void DisableObjects()
+        {
+            foreach (GameObject obj in drawings)
+            {
+                obj.SetActive(false);
+            }
+        }
+
+        public void increaseIndex()
+        {
+            print("increase");
+            index += 1;
+        }
     }
 }
