@@ -19,7 +19,7 @@ public class AnimationsHandler : MonoBehaviour
 
     void Start()
     {
-        anim = GetComponent<Animator>();
+        anim = this.GetComponent<Animator>();
         rating = GetComponent<string>();
         //isRecording = whisper.getRecordingState();
         //isTalking = speech.talking;

@@ -47,7 +47,7 @@ private Conversation()
 
         void StartGame()
         {
-            talking = true; playing = true; drawingPhase = 0;
+            talking = true; playing = true; drawingPhase = 0; bad_v = 0; soBad_v = 0;
             //TODO: Play the Intro, set Polly message (delay 3.000), Show the instructions
             //User regulates interaction. Set First prompt after finishing intro
         }
