@@ -35,7 +35,7 @@ namespace Samples.Whisper
         private string scorePrompt = "Score the answer given to this question from 1-10, dont write words just the score based on a 5 y/o child pov and if the answer and question are in the same context. ";
         public List<int> scores = new List<int>();
         public TextToSpeech tts;
-        private bool askAgain = false; //todo: va en la clase de semaforo
+        private bool askAgain = false;
         private CreateChatCompletionRequest requestAI;
         private String question;
         public DrawingProgress drawingProgress;
@@ -150,7 +150,7 @@ namespace Samples.Whisper
             }
 
             var fullScorePrompt = scorePrompt;
-            var answer = "i hate you"; // todo: call stt
+            var answer = "i hate you"; // todo: call stt w/ await
             fullScorePrompt += "Question: " + question + ".Answer: " + answer;
             newMessage.Content = fullScorePrompt;
 
@@ -183,7 +183,7 @@ namespace Samples.Whisper
                 }
                 scores.Add(rating);
 
-                if (scores.Last() >= 7)
+                if (scores.Last() >= 7) //todo: ver si ajustamos rangos
                 {
                     askAgain = false;
                     drawingProgress.increaseIndex();
