@@ -10,6 +10,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using Newtonsoft.Json.Linq;
 using Unity.VisualScripting;
+using Scripts.Conversation;
 
 namespace Scripts.TexToSpeech
 {
@@ -17,6 +18,7 @@ namespace Scripts.TexToSpeech
 {
     [SerializeField] private AudioSource audioSource;
     public string introSpeak;
+    public Conversation.Conversation Conversation;
 
     void Start()
     {
@@ -61,7 +63,11 @@ namespace Scripts.TexToSpeech
             var clip = DownloadHandlerAudioClip.GetContent(www);
             audioSource.clip = clip;
             audioSource.Play();
-        }
+
+            Conversation.talking = true;
+            await Task.Delay((int)(clip.length * 1000)); // Convert clip length from seconds to milliseconds
+            Conversation.talking = false;
+            }
     }
 
     private void WriteintoFile(Stream stream)

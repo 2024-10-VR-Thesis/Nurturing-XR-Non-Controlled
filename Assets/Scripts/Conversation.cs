@@ -6,14 +6,14 @@ using UnityEngine;
 namespace Scripts.Conversation
 {
     public sealed class Conversation : MonoBehaviour
-{
+    {
         public static Conversation instance;
         public bool talking { get; set; }
         public bool listening { get; set; }
-        public bool drawing {  get; set; } //Para qué se usa?
-        public bool playing {  get; set; }
+        public bool drawing { get; set; }
+        public bool playing { get; set; }
         public int drawingPhase { get; set; }
-        public int bad_v   { get; set; }
+        public int bad_v { get; set; }
         public int soBad_v { get; set; }
 
 private Conversation()

@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using Scripts.Conversation;
 using UnityEngine.SocialPlatforms.Impl;
+using Samples.Whisper;
+using System.Linq;
 
 
 public class AnimationsHandler : MonoBehaviour
 {
     Animator anim;
     Conversation conversation;
+    Whisper Whisper;
     
     bool isRecording;
     bool isTalking;
@@ -17,31 +20,37 @@ public class AnimationsHandler : MonoBehaviour
     void Start()
     {
         anim = this.GetComponent<Animator>();
-        rating = GetComponent<int>();
         conversation = GetComponent<Conversation>();
     }
 
-    private void setRating()
+    public void setRating(int rating)
     {
-        if(rating > 7) {
+        if (rating >= 7) {
             if (conversation.soBad_v > 0)
             {
                 conversation.soBad_v--;
+                anim.SetInteger("SoBad_v", anim.GetInteger("SoBad_v") -1 );
             } else if (conversation.bad_v > 0)
             {
                 conversation.bad_v--;
+                anim.SetInteger("Bad_v", anim.GetInteger("Bad_v") - 1);
             }
         } else if (rating < 4) {
             conversation.soBad_v++;
+            anim.SetInteger("SoBad_v", anim.GetInteger("SoBad_v") + 1);
         } else
         {
             conversation.bad_v++;
+            anim.SetInteger("Bad_v", anim.GetInteger("Bad_v") + 1);
         }
 
     }
 
-    void Update()
+    public void setBooleans()
     {
-        setRating();
+        anim.SetBool("Talking", conversation.talking);
+        anim.SetBool("Listening", conversation.listening);
     }
+
+    void Update(){}
 }
