@@ -15,6 +15,7 @@ using System.Text.RegularExpressions;
 using System.Linq;
 using System;
 using Unity.VisualScripting;
+using System.Security.Cryptography;
 
 namespace Samples.Whisper
 {
@@ -26,26 +27,23 @@ namespace Samples.Whisper
         private readonly int duration = 5;
 
         private AudioClip clip;
-        private bool isRecording;
-        private float time;
         private OpenAIApi openai = new OpenAIApi();
         private OpenAIApi openAI = new OpenAIApi();
         private List<ChatMessage> messages = new List<ChatMessage>();
-        private string prompt = "Act as 5 y/o child. Dont break character. Dont ever mention you are an AI model. You are going to create an imaginative question based on an object or a previous answer, just the question. ";
-        private string scorePrompt = "Score the answer given to this question from 1-10, dont write words just the score based on a 5 y/o child pov and if the answer and question are in the same context. ";
+        private string prompt = "Act as 5 y/o child. Dont break character. Dont ever mention you are an AI model. Create an imaginative question based on an object or a previous answer, just the question. ";
+        private string scorePrompt = "Score the answer given to a question from 1-10, dont write words just the score based on a 5 y/o child pov and if the answer and question are in the same context. ";
         public List<int> scores = new List<int>();
         public TextToSpeech tts;
-        private bool askAgain = false;
         private CreateChatCompletionRequest requestAI;
-        private String question;
         public AnimationsHandler animationsHandler;
         public DrawingProgress drawingProgress;
+        private string question;
 
 
         private void Start()
         {
 
-            GenerateImaginativeQuestion("Pillow");
+            GenerateImaginativeQuestion("Pillow", QuestionMode.OBJECT);
             //drawingProgress = GetComponent<DrawingProgress>();
 
             Debug.Log("Inicio");
@@ -53,7 +51,6 @@ namespace Samples.Whisper
 
         private void StartRecording()
         {
-            isRecording = true;
 
 #if !UNITY_WEBGL
             clip = Microphone.Start(Microphone.devices[0], false, duration, 44100);
@@ -72,15 +69,14 @@ namespace Samples.Whisper
             // Obtener la transcripción del audio
             string transcribedText = await GetAudioTranscription(data);
 
+            await scoreAnswer(transcribedText);
 
             // Enviar la transcripción a ChatGPT para obtener la pregunta imaginativa
-            await GenerateImaginativeQuestion(transcribedText);
+            if (scores.Count > 0 && scores.Last() < 7)
+            {
+                await GenerateImaginativeQuestion(transcribedText, QuestionMode.ASK_AGAIN);
 
-
-            // Restablecer la UI
-            //progressBar.fillAmount = 0;
-
-            isRecording = false;
+            }
         }
 
         private async Task<string> GetAudioTranscription(byte[] audioData)
@@ -94,6 +90,7 @@ namespace Samples.Whisper
 
             var res = await openai.CreateAudioTranscription(req);
             Debug.Log(res.Text);
+
             return res.Text;
         }
 
@@ -112,66 +109,81 @@ namespace Samples.Whisper
             }
         }
 
-        private async Task GenerateImaginativeQuestion(string transcribedText) //no es necesariamente transcripcion, tambien es objeto
+        private async Task GenerateImaginativeQuestion(string transcribedText, QuestionMode mode) //no es necesariamente transcripcion, tambien es objeto
         {
             ChatMessage newMessage = new ChatMessage();
             //newMessage.Content = transcribedText;
             newMessage.Role = "user";
-            if (messages.Count == 0 || askAgain)
+            var questionPrompt = prompt;
+            if (mode == QuestionMode.ASK_AGAIN)
             {
-                var questionPrompt = prompt;
-                if (askAgain)
-                {
-                    var previousAnswer = transcribedText;
-                    questionPrompt += "Previous answer: " + previousAnswer;
-                }
-                else
-                {
-                    var objeto = transcribedText;
-                    questionPrompt += "Object: " + objeto;
-                }
-
-                newMessage.Content = questionPrompt;
-                messages.Add(newMessage);
-                Debug.Log(messages);
-
-                requestAI = new CreateChatCompletionRequest();
-                requestAI.Messages = messages;
-                requestAI.Model = "gpt-3.5-turbo";
-
-                var aiResponse = await openAI.CreateChatCompletion(requestAI);
-
-                if (aiResponse.Choices != null && aiResponse.Choices.Count > 0)
-                {
-                    var chatResponse = aiResponse.Choices[0].Message;
-                    messages.Add(chatResponse);
-                    string text = chatResponse.Content;
-                    print("question" + text);
-                    question = text;
-                    tts.texttospeech(text);
-                }
+                var previousAnswer = transcribedText;
+                questionPrompt += "Previous answer: " + previousAnswer;
+            }
+            else
+            {
+                var objeto = transcribedText;
+                questionPrompt += "Object: " + objeto;
             }
 
-            var fullScorePrompt = scorePrompt;
-            var answer = "i hate you"; // todo: call stt w/ await
-            fullScorePrompt += "Question: " + question + ".Answer: " + answer;
-            newMessage.Content = fullScorePrompt;
-
+            newMessage.Content = questionPrompt;
             messages.Add(newMessage);
+            Debug.Log(messages);
+
+            requestAI = new CreateChatCompletionRequest();
             requestAI.Messages = messages;
             requestAI.Model = "gpt-3.5-turbo";
 
-            var responseR = await openAI.CreateChatCompletion(requestAI);
+            var aiResponse = await openAI.CreateChatCompletion(requestAI);
 
-            if (responseR.Choices != null && responseR.Choices.Count > 0)
+            if (aiResponse.Choices != null && aiResponse.Choices.Count > 0)
             {
-                var chatResponse = responseR.Choices[0].Message;
+                var chatResponse = aiResponse.Choices[0].Message;
+                messages.Add(chatResponse);
                 string text = chatResponse.Content;
-               
+                question = text;
+                tts.texttospeech(text);
+            }
 
-                // En este lugar se llama al task para extraer el número e imprimirlo en la consola
+            
+        }
+
+        void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.T))
+            {
+                Debug.Log("Tecla T presionada");
+                StartRecording();
+            }
+            else if (Input.GetKeyUp(KeyCode.T))
+            {
+                Debug.Log("Tecla T no presionada");
+                EndRecording();
+            }
+        }
+
+        private async Task scoreAnswer(string transcribedAnswer)
+        {
+            ChatMessage newMessage = new ChatMessage();
+            var fullScorePrompt = scorePrompt;
+            var answer = transcribedAnswer;
+            fullScorePrompt += "Question: " + question + ". Answer: " + answer;
+            newMessage.Content = fullScorePrompt;
+            newMessage.Role = "user";
+            messages.Add(newMessage);
+
+            requestAI = new CreateChatCompletionRequest();
+            requestAI.Messages = messages;
+            requestAI.Model = "gpt-3.5-turbo";
+
+            var aiResponse = await openAI.CreateChatCompletion(requestAI);
+
+            if (aiResponse.Choices != null && aiResponse.Choices.Count > 0)
+            {
+                var chatResponse = aiResponse.Choices[0].Message;
+                string text = chatResponse.Content;
                 int rating = await ExtractRatingFromResponse(text);
-                print("score:" + rating);
+
                 if (rating == -1)
                 {
                     if (scores.Count >= 1)
@@ -185,67 +197,22 @@ namespace Samples.Whisper
                     }
                 }
                 scores.Add(rating);
-                animationsHandler.setRating(rating);
+                //animationsHandler.setRating(rating);
+
+                Debug.Log("Calificación obtenida: " + scores.Last());
 
                 if (scores.Last() >= 7) //todo: ver si ajustamos rangos
                 {
-                    askAgain = false;
                     drawingProgress.increaseIndex();
-                    return;
                 }
-                else
-                {
-                    askAgain = true;
-                    GenerateImaginativeQuestion(answer);
-                
-                    //todo: hacer nueva pregunta
-                }
-                //todo: send score to girl
-                Debug.Log("Calificación obtenida: " + scores.Last());
-
-                print(newMessage.Content);
-                //messages.Add(newMessage);
-
-                /*
-
-                CreateChatCompletionRequest request = new CreateChatCompletionRequest();
-                request.Messages = messages;
-                request.Model = "gpt-3.5-turbo";
-
-                var response = await openAI.CreateChatCompletion(request);
-
-                if (response.Choices != null && response.Choices.Count > 0)
-                {
-                    var chatResponse = response.Choices[0].Message;
-
-                    string text = chatResponse.Content;
-
-                    Debug.Log("este es el texto " + text);
-
-                    messages.Add(chatResponse);
-
-                    Debug.Log(chatResponse.Content);
-                }
-                int index = messages.Count - 1;
-                tts.setSpeak(messages[index].Content);
-                tts.texttospeech();
-                */
-            }
-
-
-            void Update()
-            {
-                if (Input.GetKeyDown(KeyCode.T))
-                {
-                    Debug.Log("Tecla T presionada");
-                    StartRecording();
-                }
-                else if (Input.GetKeyUp(KeyCode.T))
-                {
-                    Debug.Log("Tecla T no presionada");
-                    EndRecording();
-                }
+                //messages.Clear()
             }
         }
+
+        public enum QuestionMode
+        {
+            ASK_AGAIN,
+            OBJECT
+        }
     }
-}   
+}
