@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-//using Whisper.whisper;
+using Samples.Whisper;
+using Scripts.Conversation;
 
 [RequireComponent(typeof(Collider))]
 [RequireComponent(typeof(Rigidbody))]
@@ -12,8 +13,12 @@ public class EyeInteractable : MonoBehaviour
 
     [SerializeField]
     private UnityEvent<GameObject> OnObjectHover;
+    
+    Whisper whisper;
+    Conversation conversation;
+    
 
-    //Whisper anya = new Whisper();
+
 
     void Start() { }
 
@@ -22,19 +27,12 @@ public class EyeInteractable : MonoBehaviour
     {
         if(IsHovered)
         {
-            //if( !(anya.isTalking || anya.isListening) ){
-            // OnObjectHover?.Invoke(gameObject)
-            // name = gameObject.name;
-            // anya.addObject(name);
-            //}
-
-            name = gameObject.name;
+            if( !(conversation.talking || conversation.listening) ){
+                OnObjectHover?.Invoke(gameObject);
+                name = gameObject.name;
+                whisper.GenerateImaginativeQuestion(name, Whisper.QuestionMode.OBJECT);
+            }
             
         }
-        else
-        {
-            
-        }
-        
     }
 }

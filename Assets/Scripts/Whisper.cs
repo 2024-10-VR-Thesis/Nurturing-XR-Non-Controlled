@@ -42,8 +42,6 @@ namespace Samples.Whisper
 
         private void Start()
         {
-
-            GenerateImaginativeQuestion("Pillow", QuestionMode.OBJECT);
             //drawingProgress = GetComponent<DrawingProgress>();
 
             Debug.Log("Inicio");
@@ -109,7 +107,7 @@ namespace Samples.Whisper
             }
         }
 
-        private async Task GenerateImaginativeQuestion(string transcribedText, QuestionMode mode) //no es necesariamente transcripcion, tambien es objeto
+        public async Task GenerateImaginativeQuestion(string transcribedText, QuestionMode mode) //no es necesariamente transcripcion, tambien es objeto
         {
             ChatMessage newMessage = new ChatMessage();
             //newMessage.Content = transcribedText;
@@ -197,7 +195,7 @@ namespace Samples.Whisper
                     }
                 }
                 scores.Add(rating);
-                //animationsHandler.setRating(rating);
+                animationsHandler.setRating(rating);
 
                 Debug.Log("Calificación obtenida: " + scores.Last());
 
