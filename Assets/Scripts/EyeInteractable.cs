@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using Samples.Whisper;
@@ -13,26 +11,31 @@ public class EyeInteractable : MonoBehaviour
 
     [SerializeField]
     private UnityEvent<GameObject> OnObjectHover;
-    
+
     Whisper whisper;
     Conversation conversation;
-    
 
-
-
-    void Start() { }
-
+    // Add this method to initialize the conversation object
+    void Start()
+    {
+        conversation = GetComponent<Conversation>();
+        if (conversation == null)
+        {
+            Debug.LogError("Conversation component not found!");
+        }
+    }
 
     void Update()
     {
-        if(IsHovered)
+        if (IsHovered)
         {
-            if( !(conversation.talking || conversation.listening) ){
+            if (conversation != null && !(conversation.talking || conversation.listening))
+            {
                 OnObjectHover?.Invoke(gameObject);
                 name = gameObject.name;
                 whisper.GenerateImaginativeQuestion(name, Whisper.QuestionMode.OBJECT);
+                Debug.Log(name);
             }
-            
         }
     }
 }

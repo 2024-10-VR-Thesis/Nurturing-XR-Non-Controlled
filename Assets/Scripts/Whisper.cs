@@ -43,7 +43,7 @@ namespace Samples.Whisper
         private void Start()
         {
             //drawingProgress = GetComponent<DrawingProgress>();
-
+            //GenerateImaginativeQuestion("Pillow", QuestionMode.OBJECT);
             Debug.Log("Inicio");
         }
 
