@@ -1461,7 +1461,7 @@ GameObject:
   - component: {fileID: 4298238884001147247}
   - component: {fileID: 4184225775837171187}
   - component: {fileID: 3909248041411959661}
-  - component: {fileID: 6310985558707289329}
+  - component: {fileID: 7044612910906223497}
   m_Layer: 0
   m_Name: Minute hand
   m_TagString: Untagged
@@ -1555,7 +1555,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6310985558707289329
+--- !u!114 &7044612910906223497
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1564,7 +1564,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7197807214039370372}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d7f922cb867724de38185c00135fc0f7, type: 3}
+  m_Script: {fileID: 11500000, guid: 4845f411a3c72fa4a91866d055528663, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   totalRotationAngle: 360

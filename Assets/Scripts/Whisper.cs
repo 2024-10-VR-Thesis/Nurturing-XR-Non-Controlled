@@ -43,11 +43,11 @@ namespace Samples.Whisper
         private void Start()
         {
             //drawingProgress = GetComponent<DrawingProgress>();
-
-            Debug.Log("Inicio");
+            //GenerateImaginativeQuestion("Pillow", QuestionMode.OBJECT);
+            //Debug.Log("Inicio");
         }
 
-        private void StartRecording()
+        public void StartRecording()
         {
 
 #if !UNITY_WEBGL
@@ -55,7 +55,7 @@ namespace Samples.Whisper
 #endif
         }
 
-        private async void EndRecording()
+        public async void EndRecording()
         {
 
 #if !UNITY_WEBGL
@@ -75,9 +75,13 @@ namespace Samples.Whisper
                 await GenerateImaginativeQuestion(transcribedText, QuestionMode.ASK_AGAIN);
 
             }
+            else
+            {
+                messages.Clear();
+            }
         }
 
-        private async Task<string> GetAudioTranscription(byte[] audioData)
+        public async Task<string> GetAudioTranscription(byte[] audioData)
         {
             var req = new CreateAudioTranscriptionsRequest
             {
@@ -109,6 +113,8 @@ namespace Samples.Whisper
 
         public async Task GenerateImaginativeQuestion(string transcribedText, QuestionMode mode) //no es necesariamente transcripcion, tambien es objeto
         {
+            Debug.Log("--------------------LLEGO------------------------");
+
             ChatMessage newMessage = new ChatMessage();
             //newMessage.Content = transcribedText;
             newMessage.Role = "user";
