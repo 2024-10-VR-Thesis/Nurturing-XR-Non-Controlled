@@ -23,7 +23,7 @@ public class EyeTrackingIndicator : MonoBehaviour
     private LineRenderer lineRenderer;
 
     private List<EyeInteractable> eyeInteractables = new List<EyeInteractable>();
-    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -71,7 +71,7 @@ public class EyeTrackingIndicator : MonoBehaviour
 
     void UnSelect(bool clear = false)
     {
-        foreach (var interactable in eyeInteractables) 
+        foreach (var interactable in eyeInteractables)
         {
             interactable.IsHovered = false;
         }

@@ -16,6 +16,7 @@ using System.Linq;
 using System;
 using Unity.VisualScripting;
 using System.Security.Cryptography;
+using Scripts.Conversation;
 
 namespace Samples.Whisper
 {
@@ -38,6 +39,7 @@ namespace Samples.Whisper
         public AnimationsHandler animationsHandler;
         public DrawingProgress drawingProgress;
         private string question;
+        public Conversation conversation;
 
 
         private void Start()
@@ -49,7 +51,7 @@ namespace Samples.Whisper
 
         public void StartRecording()
         {
-
+            conversation.listening = true;
 #if !UNITY_WEBGL
             clip = Microphone.Start(Microphone.devices[0], false, duration, 44100);
 #endif
@@ -73,12 +75,14 @@ namespace Samples.Whisper
             if (scores.Count > 0 && scores.Last() < 7)
             {
                 await GenerateImaginativeQuestion(transcribedText, QuestionMode.ASK_AGAIN);
-
+                conversation.listening = false;
             }
             else
             {
                 messages.Clear();
+                conversation.listening = false;
             }
+
         }
 
         public async Task<string> GetAudioTranscription(byte[] audioData)
@@ -132,7 +136,6 @@ namespace Samples.Whisper
 
             newMessage.Content = questionPrompt;
             messages.Add(newMessage);
-            Debug.Log(messages);
 
             requestAI = new CreateChatCompletionRequest();
             requestAI.Messages = messages;
@@ -149,7 +152,7 @@ namespace Samples.Whisper
                 tts.texttospeech(text);
             }
 
-            
+
         }
 
         void Update()
