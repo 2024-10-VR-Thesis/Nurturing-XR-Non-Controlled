@@ -51,7 +51,7 @@ public class EyeTrackingIndicator : MonoBehaviour
 
         Vector3 rayCastDirection = transform.TransformDirection(Vector3.forward) * indicatorDistance;
 
-        if (Physics.Raycast(transform.position, rayCastDirection, out hit, Mathf.Infinity, layersToInclude))
+        if (Physics.Raycast(transform.position, rayCastDirection, out hit, 40f, layersToInclude))
         {
             UnSelect();
             lineRenderer.startColor = indicatorColorColliderState;

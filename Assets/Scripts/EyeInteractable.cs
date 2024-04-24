@@ -9,13 +9,14 @@ public class EyeInteractable : MonoBehaviour
 {
     public bool IsHovered { get; set; }
 
-    [SerializeField]
-    private UnityEvent<GameObject> OnObjectHover;
+    public UnityEvent<GameObject> OnObjectHover;
 
+    [SerializeField]
     Whisper whisper;
+
+    [SerializeField]
     Conversation conversation;
 
-    // Add this method to initialize the conversation object
     void Start()
     {
         conversation = GetComponent<Conversation>();
@@ -25,16 +26,16 @@ public class EyeInteractable : MonoBehaviour
         }
     }
 
-    void Update()
+    async void Update()
     {
         if (IsHovered)
         {
+           Debug.Log(gameObject.name);
             if (conversation != null && !(conversation.talking || conversation.listening))
             {
+                await whisper.GenerateImaginativeQuestion(name, Whisper.QuestionMode.OBJECT);
                 OnObjectHover?.Invoke(gameObject);
                 name = gameObject.name;
-                whisper.GenerateImaginativeQuestion(name, Whisper.QuestionMode.OBJECT);
-                Debug.Log(name);
             }
         }
     }
