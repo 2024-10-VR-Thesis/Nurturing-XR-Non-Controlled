@@ -919,8 +919,8 @@ MonoBehaviour:
   OnObjectHover:
     m_PersistentCalls:
       m_Calls: []
-  whisper: {fileID: 0}
-  conversation: {fileID: 0}
+  whisper: {fileID: 7114813101156430308}
+  conversation: {fileID: 7114813101156430314}
 --- !u!54 &389231608
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3262,8 +3262,8 @@ MonoBehaviour:
   OnObjectHover:
     m_PersistentCalls:
       m_Calls: []
-  whisper: {fileID: 0}
-  conversation: {fileID: 0}
+  whisper: {fileID: 7114813101156430308}
+  conversation: {fileID: 7114813101156430314}
 --- !u!54 &1436628802
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4639,6 +4639,11 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0.28
       objectReference: {fileID: 0}
+    - target: {fileID: 6358525627981327356, guid: 2b89dd9bd6bd59a4ebcf5bbb33f0a6f4,
+        type: 3}
+      propertyPath: m_Name
+      value: lights
+      objectReference: {fileID: 0}
     - target: {fileID: 6878545213458274350, guid: 2b89dd9bd6bd59a4ebcf5bbb33f0a6f4,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4716,8 +4721,8 @@ MonoBehaviour:
   OnObjectHover:
     m_PersistentCalls:
       m_Calls: []
-  whisper: {fileID: 0}
-  conversation: {fileID: 0}
+  whisper: {fileID: 7114813101156430308}
+  conversation: {fileID: 7114813101156430314}
 --- !u!54 &1917585026
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -6012,6 +6017,7 @@ MonoBehaviour:
   tts: {fileID: 7114813101156430301}
   animationsHandler: {fileID: 7114813101156430313}
   drawingProgress: {fileID: 635812935}
+  conversation: {fileID: 7114813101156430314}
 --- !u!114 &7114813101156430313
 MonoBehaviour:
   m_ObjectHideFlags: 0

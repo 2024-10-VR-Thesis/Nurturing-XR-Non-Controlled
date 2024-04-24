@@ -35,15 +35,14 @@ namespace Scripts.TexToSpeech
 
     public void setSpeak(string text)
     {
-        Debug.Log("Entro");
         introSpeak = text;
     }
 
     public async void texttospeech(string speak)
     {
+        //conversation.talking = true;            
         string speechCopy = speak;
         speak = null;
-        Debug.Log("dice");
         var request = new SynthesizeSpeechRequest()
         {
             Text = speechCopy,
@@ -63,9 +62,9 @@ namespace Scripts.TexToSpeech
             audioSource.clip = clip;
             audioSource.Play();
 
-            conversation.talking = true;            
             await Task.Delay((int)(clip.length * 1000)); // Convert clip length from seconds to milliseconds
             conversation.talking = false;
+            
             }
     }
 
