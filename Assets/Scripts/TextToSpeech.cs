@@ -5,7 +5,6 @@ using Amazon.Runtime;
 using System.IO;
 using System;
 using System.Threading.Tasks;
-using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.Networking;
 using Newtonsoft.Json.Linq;
