@@ -50,8 +50,8 @@ namespace Scripts.TexToSpeech
             VoiceId = VoiceId.Ivy,
             OutputFormat = OutputFormat.Mp3
         };
-        var credentials = new BasicAWSCredentials("", "");
-        var client = new AmazonPollyClient(credentials, RegionEndpoint.USEast1);
+            var credentials = new BasicAWSCredentials("", "");
+            var client = new AmazonPollyClient(credentials, RegionEndpoint.USEast1);
         var response = await client.SynthesizeSpeechAsync(request);
         WriteintoFile(response.AudioStream);
         using (var www = UnityWebRequestMultimedia.GetAudioClip($"{Application.persistentDataPath}/audio.mp3", AudioType.MPEG))

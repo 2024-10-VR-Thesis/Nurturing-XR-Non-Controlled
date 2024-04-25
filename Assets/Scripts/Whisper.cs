@@ -47,6 +47,7 @@ namespace Samples.Whisper
             //drawingProgress = GetComponent<DrawingProgress>();
             //GenerateImaginativeQuestion("Pillow", QuestionMode.OBJECT);
             //Debug.Log("Inicio");
+            scores.Add(8);
         }
 
         public void StartRecording()
@@ -74,10 +75,12 @@ namespace Samples.Whisper
             // Enviar la transcripción a ChatGPT para obtener la pregunta imaginativa
             if (scores.Count > 0 && scores.Last() < 7)
             {
+                conversation.talking = true;
                 await GenerateImaginativeQuestion(transcribedText, QuestionMode.ASK_AGAIN);
                 conversation.listening = false;
+                Debug.Log("BAD, TRY AGAIN");
             }
-            else
+            else if (scores.Count > 0 && scores.Last() > 7)
             {
                 messages.Clear();
                 conversation.listening = false;
@@ -117,7 +120,7 @@ namespace Samples.Whisper
 
         public async Task GenerateImaginativeQuestion(string transcribedText, QuestionMode mode) //no es necesariamente transcripcion, tambien es objeto
         {
-            Debug.Log("--------------------LLEGO------------------------");
+            Debug.Log("--------------------LLEGO PREGUNTA------------------------");
 
             ChatMessage newMessage = new ChatMessage();
             //newMessage.Content = transcribedText;
@@ -171,6 +174,7 @@ namespace Samples.Whisper
 
         private async Task scoreAnswer(string transcribedAnswer)
         {
+            Debug.Log("--------------------LLEGO SCORE------------------------");
             ChatMessage newMessage = new ChatMessage();
             var fullScorePrompt = scorePrompt;
             var answer = transcribedAnswer;

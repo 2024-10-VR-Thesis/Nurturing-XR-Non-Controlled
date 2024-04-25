@@ -2,6 +2,9 @@ using UnityEngine;
 using UnityEngine.Events;
 using Samples.Whisper;
 using Scripts.Conversation;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 [RequireComponent(typeof(Collider))]
 [RequireComponent(typeof(Rigidbody))]
@@ -11,35 +14,33 @@ public class EyeInteractable : MonoBehaviour
 
     public UnityEvent<GameObject> OnObjectHover;
 
-    [SerializeField]
-    Whisper whisper;
+    [SerializeField] Whisper whisper;
+    [SerializeField] Conversation conversation;
 
-    [SerializeField]
-    Conversation conversation;
-
-    void Start()
+    private async Task HandleHoverAsync()
     {
-        //conversation = GetComponent<Conversation>();
-        /*
-        if (conversation == null)
+        if (!(conversation.talking || conversation.listening) && whisper.scores.Last() > 7)
         {
-            Debug.LogError("Conversation component not found!");
+            lock (whisper.scores)
+            {
+                if (whisper.scores.Any())
+                {
+                    whisper.scores.RemoveAt(0);
+                }
+            }
+
+            OnObjectHover?.Invoke(gameObject);
+            string name = gameObject.name;
+            conversation.talking = true;
+            await whisper.GenerateImaginativeQuestion(name, Whisper.QuestionMode.OBJECT);
         }
-        */
     }
 
-    async void Update()
+    private void Update()
     {
         if (IsHovered)
         {
-            //Debug.Log(gameObject.name);
-            if (conversation != null && !(conversation.talking || conversation.listening))
-            {
-                OnObjectHover?.Invoke(gameObject);
-                name = gameObject.name;
-                conversation.talking = true;
-                await whisper.GenerateImaginativeQuestion(name, Whisper.QuestionMode.OBJECT);
-            }
+            _ = HandleHoverAsync(); // Fire and forget async method
         }
     }
 }
