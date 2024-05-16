@@ -8,7 +8,7 @@ public class MinuteHandMovement : MonoBehaviour
 {
     Conversation conversation;
     public float totalRotationAngle = 360f;
-    public float durationMinutes = 0.5f;
+    public float durationMinutes = 5f;
 
     private float rotationSpeed;
     private float durationSeconds;
