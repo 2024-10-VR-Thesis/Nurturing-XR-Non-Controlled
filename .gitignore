@@ -73,3 +73,6 @@ crashlytics-build.properties
 
 # misc
 .DS_Store
+
+# png
+*.png
