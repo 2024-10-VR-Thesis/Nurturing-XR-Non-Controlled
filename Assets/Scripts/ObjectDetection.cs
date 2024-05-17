@@ -2,9 +2,12 @@ using UnityEngine;
 using System.IO;
 using System.Net.Http;
 using System.Collections;
+using TMPro;
+using UnityEngine.Networking;
 
 public class ObjectDetection : MonoBehaviour
 {
+    public TMP_Text worldText;
 
     void Start()
     {
@@ -23,19 +26,35 @@ public class ObjectDetection : MonoBehaviour
 
     IEnumerator CaptureAndSendScreenshot()
     {
-        string screenshotName = System.Guid.NewGuid().ToString() + ".png";
+        string screenshotName = System.Guid.NewGuid().ToString();
         string screenshotPath = Path.Combine(Application.dataPath, "ScreenCaptures", screenshotName);
+        string normalizedPath = screenshotPath.Replace("\\", "/");
 
-        ScreenCapture.CaptureScreenshot(screenshotPath);
-        Debug.Log("Screenshot captured and saved at: " + screenshotPath);
+        string url = "http://127.0.0.1:5000/screenshot";
+        Debug.Log("This is the path: " + screenshotPath);
+        string jsonBody = "{\"screenshot_name\": \"" + normalizedPath + "\"}";
+        print(jsonBody);
 
-        // Wait until the screenshot file exists
-        while (!File.Exists(screenshotPath))
+        UnityWebRequest request = new UnityWebRequest(url, "POST");
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonBody);
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+
+        yield return request.SendWebRequest();
+
+        if (request.result != UnityWebRequest.Result.Success)
         {
-            yield return null;
+            Debug.LogError("Error: " + request.error);
         }
+        /*
+        else
+        {
+            Debug.Log($"Screenshot request with name {normalizedPath} sent successfully");
+        }
+        */
 
-        SendScreenshot(screenshotPath);
+        SendScreenshot(screenshotPath+".png");
     }
 
     async void SendScreenshot(string screenshotPath)
@@ -62,10 +81,12 @@ public class ObjectDetection : MonoBehaviour
             dynamic result = Newtonsoft.Json.JsonConvert.DeserializeObject(responseBody);
 
             Debug.Log(result.amazon.items);
+            worldText.text = string.Join(", ", result.amazon.items);
         }
         else
         {
             Debug.LogError($"Error: {response.StatusCode} - {response.ReasonPhrase} - {response}");
+            //worldText.text = $"Error: {response.StatusCode} - {response.ReasonPhrase} - {response}";
         }
 
         // TODO: delete screenshots, but wait until game is finished, otherwise this wont load
