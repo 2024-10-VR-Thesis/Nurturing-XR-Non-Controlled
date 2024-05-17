@@ -526,13 +526,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae1afc9acfe011b4399c667679ae7f0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <IsHovered>k__BackingField: 0
-  OnObjectHover:
-    m_PersistentCalls:
-      m_Calls: []
-    m_CallsDirty: 1
-  whisper: {fileID: 0}
-  conversation: {fileID: 0}
 --- !u!54 &401593137
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1794,7 +1787,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1937966723
 Transform:
   m_ObjectHideFlags: 0
