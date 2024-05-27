@@ -11,7 +11,7 @@ namespace Scripts.DrawingProgress
 
         public GameObject[] drawings;
         public int index;
-        private Conversation.Conversation conversation;
+        public Conversation.Conversation conversation;
 
         void Start()
         {
@@ -25,7 +25,9 @@ namespace Scripts.DrawingProgress
             {
                 drawings[index].SetActive(true);
             }
-            if (index == 3) { conversation.playing = false; }
+            if (index == 3) {
+                conversation.playing = false;
+            }
         }
 
         void DisableObjects()

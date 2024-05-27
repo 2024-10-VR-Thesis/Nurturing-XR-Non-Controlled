@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Threading.Tasks;
-using Scripts.Conversation;
 public class AudioManager : MonoBehaviour
 {
     [SerializeField] AudioSource musicSource;
@@ -17,14 +16,13 @@ public class AudioManager : MonoBehaviour
     public AudioClip perderPorTiempo;
     public AudioClip perderPreguntas;
     public AudioClip ganar;
-    public Conversation conversation;
 
     // Start is called before the first frame update
     async void Start()
     {
         musicSource.clip = tutorial;
         musicSource.Play();
-        await Task.Delay(15000);
+        await Task.Delay(20000);
         musicSource.clip = backgroundMusic;
         musicSource.Play();
     }

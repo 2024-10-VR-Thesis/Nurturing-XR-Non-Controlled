@@ -39,7 +39,7 @@ public class ConversationStarter : MonoBehaviour
 
         StartCoroutine(questionCountdown.UpdateTime());
         
-        yield return new WaitForSeconds(15);
+        yield return new WaitForSeconds(20);
 
         var task = whisper.GenerateImaginativeQuestion(randomObject, Whisper.QuestionMode.OBJECT);
 

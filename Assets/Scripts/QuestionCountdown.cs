@@ -6,7 +6,7 @@ using TMPro;
 public class QuestionCountdown : MonoBehaviour
 {
     public TMP_Text countdownTvText;
-    private int countdownTime = 15;
+    private int countdownTime = 20;
     private bool questionReady { get; set; }
 
     // Start is called before the first frame update
@@ -31,7 +31,7 @@ public class QuestionCountdown : MonoBehaviour
             countdownTvText.text = $"Question: (In about {countdownTime} sec" + (countdownTime == 1 ? "" : "s") + ")";
         }
 
-        countdownTime = 15;
+        countdownTime = 20;
     }
 
 }

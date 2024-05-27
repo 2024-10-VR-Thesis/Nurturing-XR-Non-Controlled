@@ -48,7 +48,7 @@ namespace Samples.Whisper
         public Conversation conversation;
         public AudioManager audioManager;
         public int contadorMusica;
-        public Endgamecanvas endgamecanvas;
+        public EndGame endGame;
         public ConversationStarter conversationStarter;
 
         private void Start()
@@ -83,9 +83,8 @@ namespace Samples.Whisper
             string transcribedText = await GetAudioTranscription(data);
             answerTvText.text = "Your answer: " + transcribedText;
 
-            await scoreAnswer(transcribedText);
+            await scoreAnswer(transcribedText); // Enviar la transcripción a ChatGPT para obtener la pregunta imaginativa
 
-            // Enviar la transcripción a ChatGPT para obtener la pregunta imaginativa
 
             if (scores.Count > 0 && scores.Last() <= 7)
             {
@@ -96,7 +95,7 @@ namespace Samples.Whisper
                 await Task.Delay(3000);
                 resetTvtTexts();
                 StartCoroutine(questionCountdown.UpdateTime());
-                await Task.Delay(15000);
+                await Task.Delay(20000);
                 await GenerateImaginativeQuestion(transcribedText, QuestionMode.ASK_AGAIN);
                 Debug.Log("BAD, TRY AGAIN");
 
@@ -189,7 +188,7 @@ namespace Samples.Whisper
                 conversation.listening = true;
             }
 
-            answerTvText.text = "Your answer: (Press A to record)";
+            answerTvText.text = "Your answer: (Hold A to record)";
 
         }
 
@@ -274,7 +273,7 @@ namespace Samples.Whisper
                 conversation.soBad_v++;
                 if (conversation.soBad_v == 3)
                 {
-                    endgamecanvas.razon = 2;
+                    endGame.razon = 2;
                     conversation.playing = false;
                 }
             }
