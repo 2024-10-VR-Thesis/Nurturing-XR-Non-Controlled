@@ -16,7 +16,7 @@ public class ClockHandler : MonoBehaviour
 
     //public ConversationStarter conversationStarter;
 
-    private int minutes = 1;
+    private int minutes = 5;
     private int seconds = 0;
 
     private void Start()
