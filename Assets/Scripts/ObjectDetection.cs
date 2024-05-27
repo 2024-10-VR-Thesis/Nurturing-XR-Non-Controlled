@@ -2,7 +2,6 @@ using UnityEngine;
 using System.IO;
 using System.Net.Http;
 using System.Collections;
-using TMPro;
 using UnityEngine.Networking;
 using System.Collections.Generic;
 using Newtonsoft.Json;
@@ -10,7 +9,7 @@ using System.Threading.Tasks;
 
 public class ObjectDetection : MonoBehaviour
 {
-    public TMP_Text worldText;
+    public List<string> detectedObjects;
 
     void Start()
     {
@@ -18,7 +17,7 @@ public class ObjectDetection : MonoBehaviour
         //StartCoroutine(DetectObjects());
     }
 
-    IEnumerator DetectObjects()
+    public IEnumerator DetectObjects()
     {
         string url = "http://127.0.0.1:5000/detect";
         UnityWebRequest request = new UnityWebRequest(url, "POST");
@@ -36,9 +35,19 @@ public class ObjectDetection : MonoBehaviour
         {
             string jsonResponse = request.downloadHandler.text;
             List<string> responseList = JsonConvert.DeserializeObject<List<string>>(jsonResponse);
-            worldText.text = responseList[2];
+            detectedObjects = responseList;
         }
 
+    }
+
+    public List<string> GetDetectedObjects()
+    {
+        return detectedObjects;
+    }
+
+    public void EmptyDetectedObjects()
+    {
+        detectedObjects.Clear();
     }
 
 }
