@@ -36,6 +36,7 @@ public class ObjectDetection : MonoBehaviour
             string jsonResponse = request.downloadHandler.text;
             List<string> responseList = JsonConvert.DeserializeObject<List<string>>(jsonResponse);
             detectedObjects = responseList;
+            print("RESPONSE LIST: " + string.Join(",", detectedObjects.ToArray()));
         }
 
     }

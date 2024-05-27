@@ -14,14 +14,14 @@ public class ClockHandler : MonoBehaviour
     public TMP_Text questionTvText;
     public TMP_Text timeText;
 
-    //public ConversationStarter conversationStarter;
+    public ConversationStarter conversationStarter;
 
     private int minutes = 5;
     private int seconds = 0;
 
     private void Start()
     {
-        StartCoroutine(StartTime());
+       
     }
 
     private void Update()
@@ -36,8 +36,7 @@ public class ClockHandler : MonoBehaviour
     public IEnumerator StartTime()
     {
         start = true;
-        questionTvText.text = "Question: (Please wait)";
-        //conversationStarter.StartConversation();
+
         while (minutes != 0 || seconds != 0)
         {  
             seconds -= 1;

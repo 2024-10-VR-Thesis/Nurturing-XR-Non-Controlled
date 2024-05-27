@@ -12,11 +12,13 @@ namespace Scripts.Conversation
         public bool listening { get; set; }
         public bool drawing { get; set; }
         public bool playing { get; set; }
-        public int drawingPhase { get; set; }
+
         public int bad_v { get; set; }
         public int soBad_v { get; set; }
 
-private Conversation()
+        public List<string> askedObjects = new List<string>();
+
+        private Conversation()
         {
         }
 
@@ -35,19 +37,19 @@ private Conversation()
 
         void Start()
         {
-                StartGame();
+            StartGame();
         }
         void Update()
         {
             if (!playing)
-                {
-                    EndGame();
-                }
+            {
+                EndGame();
+            }
         }
 
         void StartGame()
         {
-            talking = true; playing = true; drawingPhase = 0; bad_v = 0; soBad_v = 0;
+            talking = true; playing = true; bad_v = 0; soBad_v = 0;
             //TODO: Play the Intro, set Polly message (delay 3.000), Show the instructions
             //User regulates interaction. Set First prompt after finishing intro
         }

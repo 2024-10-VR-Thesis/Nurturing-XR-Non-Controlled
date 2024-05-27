@@ -1,6 +1,8 @@
+using Scripts.Conversation;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 
 namespace Scripts.DrawingProgress
 {
@@ -8,10 +10,8 @@ namespace Scripts.DrawingProgress
     {
 
         public GameObject[] drawings;
-        public float spawnInterval = 5f;
-        private float timer = 0f;
         public int index;
-        private bool create = false;
+        private Conversation.Conversation conversation;
 
         void Start()
         {
@@ -21,29 +21,11 @@ namespace Scripts.DrawingProgress
 
         void Update()
         {
-            /* timer += Time.deltaTime;
-            print(timer);
-
-            if (timer >= spawnInterval)
-            {
-                // TODO: set create according to acceptance of replies
-                create = true;
-                timer = 0f; // Reset the timer
-            }
-
-            if (create)
-            {
-                create = false;
-                if (index < drawings.Length)
-                {
-                    drawings[index].SetActive(true);
-                    index += 1;
-                }
-            } */
             if (index != -1 && index < drawings.Length)
             {
                 drawings[index].SetActive(true);
             }
+            if (index == 3) { conversation.playing = false; }
         }
 
         void DisableObjects()
@@ -58,6 +40,11 @@ namespace Scripts.DrawingProgress
         {
             print("increase");
             index += 1;
+        }
+
+        public int GetDrawnObjects()
+        {
+            return index + 1;
         }
     }
 }
