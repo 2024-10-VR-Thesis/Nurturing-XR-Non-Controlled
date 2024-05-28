@@ -181,7 +181,7 @@ namespace Samples.Whisper
                 messages.Add(chatResponse);
                 string text = chatResponse.Content;
                 question = text;
-                questionTvText.text = "Question: " + text;
+                questionTvText.text = "Question: " + text + (mode == QuestionMode.OBJECT ? " [" + transcribedText + "]" : ""); // trasncribedText es objeto
                 scoreTvText.text = "Score: ";
                 tts.texttospeech(text);
                 conversation.listening = true;
@@ -274,8 +274,7 @@ namespace Samples.Whisper
             else
             {
                 return 1;
-            }
-                
+            }       
         }
 
         public void controllAnswersValues(double score)
