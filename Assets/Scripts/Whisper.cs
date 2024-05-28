@@ -184,7 +184,6 @@ namespace Samples.Whisper
                 questionTvText.text = "Question: " + text + (mode == QuestionMode.OBJECT ? " [" + transcribedText + "]" : ""); // trasncribedText es objeto
                 scoreTvText.text = "Score: ";
                 tts.texttospeech(text);
-                conversation.listening = true;
             }
 
             answerTvText.text = "Your answer: (Hold A to record)";
