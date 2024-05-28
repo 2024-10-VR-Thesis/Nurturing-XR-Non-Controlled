@@ -53,7 +53,7 @@ namespace Scripts.TexToSpeech
                 VoiceId = VoiceId.Ivy,
                 OutputFormat = OutputFormat.Mp3
             };
-            var credentials = new BasicAWSCredentials("", "");
+            var credentials = new BasicAWSCredentials("AKIAZQ3DSEZUN3WECAN6", "HYQk/wKoN2Q40nwrmBvhXWTnv+cO7BBobeRaFwGk");
             var client = new AmazonPollyClient(credentials, RegionEndpoint.USEast1);
             var response = await client.SynthesizeSpeechAsync(request);
             WriteintoFile(response.AudioStream);

@@ -27,10 +27,7 @@ public class AnimationsHandler : MonoBehaviour
 
     public void setRating(int rating)
     {
-
-
-
-        if (rating > 7)
+        if(rating > 7)
         {
             if (conversation.soBad_v > 0)
             {
@@ -42,8 +39,7 @@ public class AnimationsHandler : MonoBehaviour
                 conversation.bad_v--;
                 anim.SetInteger("Bad_v", anim.GetInteger("Bad_v") - 1);
             }
-        }
-        else if (rating < 4)
+        }else if (rating < 4)
         {
             conversation.soBad_v++;
             anim.SetInteger("SoBad_v", anim.GetInteger("SoBad_v") + 1);
@@ -53,7 +49,6 @@ public class AnimationsHandler : MonoBehaviour
             conversation.bad_v++;
             anim.SetInteger("Bad_v", anim.GetInteger("Bad_v") + 1);
         }
-
     }
 
     public void setBooleans()
