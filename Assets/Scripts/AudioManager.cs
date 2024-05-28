@@ -31,7 +31,7 @@ public class AudioManager : MonoBehaviour
     void Update()
     {
 
-        if (!musicSource.isPlaying && musicSource.clip != tutorial)
+        if (!musicSource.isPlaying && musicSource.clip != tutorial && musicSource.clip != ganar && musicSource.clip != perderPorTiempo && musicSource.clip != perderPreguntas)
         {
             musicSource.Play();
         }
@@ -53,7 +53,7 @@ public class AudioManager : MonoBehaviour
         {
             musicSource.clip = perderPreguntas;
         }
-
+        //musicSource.loop = false;
         musicSource.Play();
     }
     public async void changeTrack(int cont)

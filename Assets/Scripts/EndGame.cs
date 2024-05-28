@@ -6,6 +6,7 @@ using TMPro;
 using Samples.Whisper;
 using System.Linq;
 using System.Threading.Tasks;
+using System;
 
 public class EndGame : MonoBehaviour
 {
@@ -27,11 +28,19 @@ public class EndGame : MonoBehaviour
         endPlayed = 0;
     }
 
-
-    // Update is called once per frame
-    async void Update()
+    public async void finish()
     {
-        if (!conversation.playing && endPlayed==0)
+        while (!conversation.playing && endPlayed == 0)
+        {
+            endPlayed++;
+            audio.endgameVoice(razon);
+            double promedio = Math.Round(whisper.scores.Average(), 2);
+            await Task.Delay(5000);
+            DeleteAllTexts();
+            endgameTvText.text = "The End \n  \n Your score average was: " + promedio;
+        }
+        /*
+        if (!conversation.playing && endPlayed == 0)
         {
             endPlayed++;
             audio.endgameVoice(razon);
@@ -40,6 +49,14 @@ public class EndGame : MonoBehaviour
             DeleteAllTexts();
             endgameTvText.text = "The End \n  \n Your score average was: " + promedio;
         }
+        */
+    }
+
+
+    // Update is called once per frame
+     void Update()
+    {
+       finish();
     }
 
     private void DeleteAllTexts()
