@@ -86,14 +86,12 @@ namespace Samples.Whisper
             await scoreAnswer(transcribedText); // Enviar la transcripción a ChatGPT para obtener la pregunta imaginativa
 
 
-            if (scores.Count > 0 && scores.Last() <= 7)
+            if (scores.Count > 0 && scores.Last() <= 7 && conversation.playing)
             {
                 scoreTvText.text += ", Try again!";
                 conversation.talking = true;
                 contadorMusica++;
                 audioManager.changeTrack(contadorMusica);
-                await Task.Delay(3000);
-                resetTvtTexts();
                 StartCoroutine(questionCountdown.UpdateTime());
                 await Task.Delay(20000);
                 await GenerateImaginativeQuestion(transcribedText, QuestionMode.ASK_AGAIN);
@@ -110,10 +108,8 @@ namespace Samples.Whisper
                 contadorMusica = 0;
                 audioManager.changeTrack(contadorMusica); // TODO: handle win case
 
-                if (drawingProgress.GetDrawnObjects() < 4)
+                if (drawingProgress.GetDrawnObjects() < 4 && conversation.playing)
                 {
-                    await Task.Delay(3000);
-                    resetTvtTexts();
                     StartCoroutine(conversationStarter.StartConversation());
                 }
             }
@@ -184,6 +180,7 @@ namespace Samples.Whisper
                 string text = chatResponse.Content;
                 question = text;
                 questionTvText.text = "Question: " + text;
+                scoreTvText.text = "Score: ";
                 tts.texttospeech(text);
                 conversation.listening = true;
             }

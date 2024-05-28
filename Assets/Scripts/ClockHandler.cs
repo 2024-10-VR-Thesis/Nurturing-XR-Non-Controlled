@@ -4,10 +4,11 @@ using System;
 using UnityEngine;
 using Scripts.Conversation;
 using TMPro;
+using Scripts.DrawingProgress;
 
 public class ClockHandler : MonoBehaviour
 {
-    Conversation conversation;
+    public Conversation conversation;
 
     private bool start = false;
 
@@ -15,6 +16,8 @@ public class ClockHandler : MonoBehaviour
     public TMP_Text timeText;
 
     public ConversationStarter conversationStarter;
+    public DrawingProgress drawingProgress;
+    public EndGame endGame;
 
     private int minutes = 5;
     private int seconds = 0;
@@ -27,9 +30,12 @@ public class ClockHandler : MonoBehaviour
     private void Update()
     {
         if (start && (minutes == 0 && seconds == 0))
-        {
+        {  
+            if (drawingProgress.GetDrawnObjects() < 4)
+            {
+                endGame.razon = 1;
+            }
             conversation.playing = false;
-
         }
     }
 

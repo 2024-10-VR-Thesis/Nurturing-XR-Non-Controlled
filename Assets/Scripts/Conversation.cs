@@ -17,6 +17,7 @@ namespace Scripts.Conversation
         public int soBad_v { get; set; }
 
         public List<string> askedObjects = new List<string>();
+        public EndGame endGame;
 
         private Conversation()
         {
@@ -56,7 +57,7 @@ namespace Scripts.Conversation
 
         void EndGame()
         {
-            //TODO: Stop the game, close the AI interaction, display the results of the session
+
         }
 
     }
