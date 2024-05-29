@@ -18,15 +18,24 @@ namespace Scripts.TexToSpeech
         public string introSpeak;
         public Conversation.Conversation conversation;
         public AnimationsHandler animationsHandler;
+        public MinuteHandMovement minuteHandMovement;
 
-        void Start()
+        async void Start()
         {
-            string path = "Assets/Static speech/tutorial.json";
-            string jsonString = File.ReadAllText(path);
-            TextToSpeechData data = JsonUtility.FromJson<TextToSpeechData>(jsonString);
-            introSpeak = data.EN;
-            texttospeech(introSpeak);
-            //introSpeak = null;
+            // Cargar el archivo JSON desde Resources
+            TextAsset jsonTextFile = Resources.Load<TextAsset>("tutorial");
+            if (jsonTextFile != null)
+            {
+                string jsonString = jsonTextFile.text;
+                TextToSpeechData data = JsonUtility.FromJson<TextToSpeechData>(jsonString);
+                await Task.Delay(17000);
+                introSpeak = data.EN;
+                texttospeech(introSpeak, true);
+            }
+            else
+            {
+                Debug.LogError("No se pudo encontrar el archivo JSON en Resources.");
+            }
         }
 
         void Update()
@@ -38,9 +47,9 @@ namespace Scripts.TexToSpeech
             introSpeak = text;
         }
 
-        public async void texttospeech(string speak)
+        public async void texttospeech(string speak, bool tutorial = false)
         {
-            //conversation.talking = true;            
+            //conversation.talking = true;
             string speechCopy = speak;
             speak = null;
             var request = new SynthesizeSpeechRequest()
@@ -50,7 +59,7 @@ namespace Scripts.TexToSpeech
                 VoiceId = VoiceId.Ivy,
                 OutputFormat = OutputFormat.Mp3
             };
-            var credentials = new BasicAWSCredentials("","");
+            var credentials = new BasicAWSCredentials(accessKey: "", secretKey: "");
             var client = new AmazonPollyClient(credentials, RegionEndpoint.USEast1);
             var response = await client.SynthesizeSpeechAsync(request);
             WriteintoFile(response.AudioStream);
@@ -64,7 +73,11 @@ namespace Scripts.TexToSpeech
 
                 await Task.Delay((int)(clip.length * 1000)); // Convert clip length from seconds to milliseconds
                 conversation.talking = false;
+            }
 
+            if (tutorial)
+            {
+                minuteHandMovement.StartTime();
             }
         }
 
@@ -87,6 +100,7 @@ namespace Scripts.TexToSpeech
     public class TextToSpeechData
     {
         public string EN; // "EN" is the key for English text
+        public string ES;
     }
 
 }

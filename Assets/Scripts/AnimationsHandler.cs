@@ -30,7 +30,7 @@ public class AnimationsHandler : MonoBehaviour
 
 
 
-        if (rating >= 7)
+        if (rating <= 7)
         {
             if (conversation.soBad_v > 0)
             {

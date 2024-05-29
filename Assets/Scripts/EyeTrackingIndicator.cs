@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(LineRenderer))]
@@ -17,12 +18,10 @@ public class EyeTrackingIndicator : MonoBehaviour
     [SerializeField]
     private Color indicatorColorDfState = Color.yellow;
 
-    [SerializeField]
-    private Color indicatorColorColliderState = Color.red;
-
     private LineRenderer lineRenderer;
+    private bool askedAlready { get; set; }
 
-    private List<EyeInteractable> eyeInteractables = new List<EyeInteractable>();
+    //private List<EyeInteractable> eyeInteractables = new List<EyeInteractable>();
 
     // Start is called before the first frame update
     void Start()
@@ -51,33 +50,34 @@ public class EyeTrackingIndicator : MonoBehaviour
 
         Vector3 rayCastDirection = transform.TransformDirection(Vector3.forward) * indicatorDistance;
 
-        if (Physics.Raycast(transform.position, rayCastDirection, out hit, 40f, layersToInclude))
+        if (Physics.Raycast(transform.position, rayCastDirection, out hit, 40f, layersToInclude) && !askedAlready)
         {
-            UnSelect();
-            lineRenderer.startColor = indicatorColorColliderState;
-            lineRenderer.endColor = indicatorColorColliderState;
-            var eyeInteractable = hit.transform.GetComponent<EyeInteractable>();
-            eyeInteractables.Add(eyeInteractable);
-            eyeInteractable.IsHovered = true;
-        }
-        else
-        {
-            lineRenderer.startColor = indicatorColorDfState;
-            lineRenderer.endColor = indicatorColorColliderState;
-            UnSelect(true);
-
+            //UnSelect();
+            if (hit.transform != null)
+            {
+                var eyeInteractable = hit.transform.GetComponent<EyeInteractable>();
+                //eyeInteractables.Add(eyeInteractable);
+                eyeInteractable.IsHovered = true;
+            }
         }
     }
 
+    /*
     void UnSelect(bool clear = false)
     {
-        foreach (var interactable in eyeInteractables)
+        Debug.Log(eyeInteractables.Count);
+        if (eyeInteractables.Count > 0) // Check if list has elements before iterating
         {
-            interactable.IsHovered = false;
+            foreach (var interactable in eyeInteractables)
+            {
+                interactable.IsHovered = false;
+            }
         }
         if (clear)
         {
             eyeInteractables.Clear();
         }
     }
+    */
+
 }
