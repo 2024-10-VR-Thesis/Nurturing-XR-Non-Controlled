@@ -36,7 +36,7 @@ namespace Samples.Whisper
         private OpenAIApi openai = new OpenAIApi();
         private OpenAIApi openAI = new OpenAIApi();
         private List<ChatMessage> messages = new List<ChatMessage>();
-        private string prompt = "Act as 5 y/o child. Dont break character. Dont ever mention you are an AI model. Create an imaginative question based on an object or a previous answer, just the question. Simply the object's name if it's too technical or advanced.";
+        private string prompt = "Act as 5 y/o child. Dont break character. Dont ever mention you are an AI model. Create an imaginative question based on an object or a previous answer, just the question.";
         private string scorePrompt = "Score the answer given to a question from 1-10, dont write words just the score based on a 5 y/o child pov and if the answer and question are in the same context. ";
         public List<int> scores = new List<int>();
         public TextToSpeech tts;
