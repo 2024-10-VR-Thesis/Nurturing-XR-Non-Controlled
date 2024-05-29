@@ -53,7 +53,7 @@ namespace Scripts.TexToSpeech
                 VoiceId = VoiceId.Ivy,
                 OutputFormat = OutputFormat.Mp3
             };
-            var credentials = new BasicAWSCredentials("AKIAZQ3DSEZUN3WECAN6", "HYQk/wKoN2Q40nwrmBvhXWTnv+cO7BBobeRaFwGk");
+            var credentials = new BasicAWSCredentials(accessKey: "", secretKey: "");
             var client = new AmazonPollyClient(credentials, RegionEndpoint.USEast1);
             var response = await client.SynthesizeSpeechAsync(request);
             WriteintoFile(response.AudioStream);
@@ -63,11 +63,13 @@ namespace Scripts.TexToSpeech
                 while (!op.isDone) await Task.Yield();
                 var clip = DownloadHandlerAudioClip.GetContent(www);
                 audioSource.clip = clip;
+                //conversation.talking = true;
                 audioSource.Play();
+                //conversation.listening = true;
 
                 await Task.Delay((int)(clip.length * 1000)); // Convert clip length from seconds to milliseconds
+
                 conversation.talking = false;
-                conversation.listening = true;
             }
 
             if (tutorial)

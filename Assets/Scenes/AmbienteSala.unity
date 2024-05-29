@@ -742,6 +742,21 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: c59c902b4324a2a44bbd09f1d3f9ddef,
         type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c59c902b4324a2a44bbd09f1d3f9ddef,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c59c902b4324a2a44bbd09f1d3f9ddef,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: c59c902b4324a2a44bbd09f1d3f9ddef,
+        type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.92
       objectReference: {fileID: 0}
@@ -753,7 +768,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: c59c902b4324a2a44bbd09f1d3f9ddef,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -8.37
+      value: -7.77
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c59c902b4324a2a44bbd09f1d3f9ddef,
         type: 3}
@@ -927,7 +942,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 1158988684}
+  m_audioClip: {fileID: 1882696610}
   m_PlayOnAwake: 1
   m_Volume: 0.7
   m_Pitch: 1
@@ -1038,7 +1053,7 @@ Animator:
   m_GameObject: {fileID: 568917161}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: e343dd07a54d2b04c9828566ca827eab, type: 3}
-  m_Controller: {fileID: 9100000, guid: 05543d516b97f7a4cbed316ab7ff0b94, type: 2}
+  m_Controller: {fileID: 9100000, guid: 578ed7faf63d17f458b074a52138ad7c, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1169,17 +1184,17 @@ PrefabInstance:
     - target: {fileID: 4432615334140130668, guid: c0009cab7f6344e299042e0b632b7c64,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.015
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 4432615334140130668, guid: c0009cab7f6344e299042e0b632b7c64,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.015
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 4432615334140130668, guid: c0009cab7f6344e299042e0b632b7c64,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.015
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 4432615334140130668, guid: c0009cab7f6344e299042e0b632b7c64,
         type: 3}
@@ -1868,34 +1883,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!83 &1158988684
-AudioClip:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  m_LoadType: 0
-  m_Channels: 0
-  m_Frequency: 0
-  m_BitsPerSample: 0
-  m_Length: 0
-  m_IsTrackerFormat: 0
-  m_Ambisonic: 0
-  m_SubsoundIndex: 0
-  m_PreloadAudioData: 1
-  m_LoadInBackground: 0
-  m_Legacy3D: 0
-  m_Resource:
-    m_Source: 
-    m_Offset: 0
-    m_Size: 0
-  m_CompressionFormat: 0
-  m_EditorResource:
-    m_Source: 
-    m_Offset: 0
-    m_Size: 0
-  m_EditorCompressionFormat: 0
 --- !u!1 &1266206772
 GameObject:
   m_ObjectHideFlags: 0
@@ -2761,6 +2748,34 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1937809288}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!83 &1882696610
+AudioClip:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_LoadType: 0
+  m_Channels: 0
+  m_Frequency: 0
+  m_BitsPerSample: 0
+  m_Length: 0
+  m_IsTrackerFormat: 0
+  m_Ambisonic: 0
+  m_SubsoundIndex: 0
+  m_PreloadAudioData: 1
+  m_LoadInBackground: 0
+  m_Legacy3D: 0
+  m_Resource:
+    m_Source: 
+    m_Offset: 0
+    m_Size: 0
+  m_CompressionFormat: 0
+  m_EditorResource:
+    m_Source: 
+    m_Offset: 0
+    m_Size: 0
+  m_EditorCompressionFormat: 0
 --- !u!1 &1898416201
 GameObject:
   m_ObjectHideFlags: 0
