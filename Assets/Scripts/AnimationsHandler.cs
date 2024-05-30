@@ -1,22 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Scripts.Conversation;
-using UnityEngine.SocialPlatforms.Impl;
 using Samples.Whisper;
-using System.Linq;
-
-
 
 public class AnimationsHandler : MonoBehaviour
 {
     Animator anim;
-    Whisper Whisper;
     Conversation conversation;
-
-    bool isRecording;
-    bool isTalking;
-    int rating;
 
     void Start()
     {

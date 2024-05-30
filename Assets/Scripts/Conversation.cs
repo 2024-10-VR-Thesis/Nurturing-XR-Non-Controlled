@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Scripts.Conversation
@@ -42,22 +40,12 @@ namespace Scripts.Conversation
         }
         void Update()
         {
-            if (!playing)
-            {
-                EndGame();
-            }
+
         }
 
         void StartGame()
         {
             talking = true; playing = true; bad_v = 0; soBad_v = 0;
-            //User regulates interaction. Set First prompt after finishing intro
         }
-
-        void EndGame()
-        {
-
-        }
-
     }
 }

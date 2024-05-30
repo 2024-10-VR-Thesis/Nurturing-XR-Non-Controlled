@@ -3,12 +3,9 @@ using Amazon.Polly;
 using Amazon.Polly.Model;
 using Amazon.Runtime;
 using System.IO;
-using System;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
-using Newtonsoft.Json.Linq;
-using Unity.VisualScripting;
 
 namespace Scripts.TexToSpeech
 {

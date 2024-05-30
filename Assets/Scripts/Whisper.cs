@@ -1,21 +1,13 @@
-using Amazon.Polly.Model;
-using Amazon.Polly;
-using Amazon.Runtime;
 using OpenAI;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.Networking;
 using UnityEngine.UI;
 using Scripts.TexToSpeech;
 using Scripts.DrawingProgress;
-using Amazon;
 using System.Text.RegularExpressions;
 using System.Linq;
 using System;
-using Unity.VisualScripting;
-using System.Security.Cryptography;
 using Scripts.Conversation;
 using TMPro;
 
@@ -116,7 +108,7 @@ namespace Samples.Whisper
 
                     messages.Clear();
                     contadorMusica = 0;
-                    audioManager.changeTrack(contadorMusica); // TODO: handle win case
+                    audioManager.changeTrack(contadorMusica);
 
                     if (drawingProgress.GetDrawnObjects() < 4 && conversation.playing)
                     {

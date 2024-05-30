@@ -1,11 +1,8 @@
 using UnityEngine;
-using System.IO;
-using System.Net.Http;
 using System.Collections;
 using UnityEngine.Networking;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using System.Threading.Tasks;
 
 public class ObjectDetection : MonoBehaviour
 {

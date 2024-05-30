@@ -1,8 +1,4 @@
-using Scripts.Conversation;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
 
 namespace Scripts.DrawingProgress
 {
@@ -40,7 +36,6 @@ namespace Scripts.DrawingProgress
 
         public void increaseIndex()
         {
-            print("increase");
             index += 1;
         }
 

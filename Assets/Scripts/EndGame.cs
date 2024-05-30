@@ -1,6 +1,4 @@
 using Scripts.Conversation;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using Samples.Whisper;
@@ -60,17 +58,6 @@ public class EndGame : MonoBehaviour
 
             endgameTvText.text = "The End \n" + (razonText) + "\n Your score average was: " + promedio;
         }
-        /*
-        if (!conversation.playing && endPlayed == 0)
-        {
-            endPlayed++;
-            audio.endgameVoice(razon);
-            double promedio = whisper.scores.Average();
-            await Task.Delay(5000);
-            DeleteAllTexts();
-            endgameTvText.text = "The End \n  \n Your score average was: " + promedio;
-        }
-        */
     }
 
 
