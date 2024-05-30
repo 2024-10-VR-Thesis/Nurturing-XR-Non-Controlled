@@ -17,7 +17,7 @@ public class ClockHandler : MonoBehaviour
     public DrawingProgress drawingProgress;
     public EndGame endGame;
 
-    private int minutes = 5;
+    public int minutes = 5;
     private int seconds = 0;
 
     private void Start()

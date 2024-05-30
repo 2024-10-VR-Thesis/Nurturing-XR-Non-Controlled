@@ -196,7 +196,7 @@ namespace Samples.Whisper
 
         }
 
-        async void Update()
+        void Update()
         {
             if (Input.GetKeyDown(KeyCode.T) && conversation.listening)
             {
@@ -209,7 +209,7 @@ namespace Samples.Whisper
                 EndRecording();
             }
 
-            if (OVRInput.GetDown(OVRInput.RawButton.A) && conversation.listening)
+            if (OVRInput.GetDown(OVRInput.RawButton.A) && conversation.listening )
             {
                 Debug.Log("Controller button pressed (Start Recording)");
                 StartRecording();

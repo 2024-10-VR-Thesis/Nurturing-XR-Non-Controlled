@@ -932,6 +932,7 @@ MonoBehaviour:
   animationsHandler: {fileID: 568917163}
   clockHandler: {fileID: 1001636814}
   conversationStarter: {fileID: 568917171}
+  whisper: {fileID: 568917164}
 --- !u!82 &568917166
 AudioSource:
   m_ObjectHideFlags: 0
@@ -942,7 +943,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 1882696610}
+  m_audioClip: {fileID: 1064223277}
   m_PlayOnAwake: 1
   m_Volume: 0.7
   m_Pitch: 1
@@ -1717,6 +1718,35 @@ MonoBehaviour:
   conversationStarter: {fileID: 568917171}
   drawingProgress: {fileID: 635812935}
   endGame: {fileID: 1749427321}
+  minutes: 5
+--- !u!83 &1064223277
+AudioClip:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_LoadType: 0
+  m_Channels: 0
+  m_Frequency: 0
+  m_BitsPerSample: 0
+  m_Length: 0
+  m_IsTrackerFormat: 0
+  m_Ambisonic: 0
+  m_SubsoundIndex: 0
+  m_PreloadAudioData: 1
+  m_LoadInBackground: 0
+  m_Legacy3D: 0
+  m_Resource:
+    m_Source: 
+    m_Offset: 0
+    m_Size: 0
+  m_CompressionFormat: 0
+  m_EditorResource:
+    m_Source: 
+    m_Offset: 0
+    m_Size: 0
+  m_EditorCompressionFormat: 0
 --- !u!1 &1107114810
 GameObject:
   m_ObjectHideFlags: 0
@@ -2748,34 +2778,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1937809288}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!83 &1882696610
-AudioClip:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  m_LoadType: 0
-  m_Channels: 0
-  m_Frequency: 0
-  m_BitsPerSample: 0
-  m_Length: 0
-  m_IsTrackerFormat: 0
-  m_Ambisonic: 0
-  m_SubsoundIndex: 0
-  m_PreloadAudioData: 1
-  m_LoadInBackground: 0
-  m_Legacy3D: 0
-  m_Resource:
-    m_Source: 
-    m_Offset: 0
-    m_Size: 0
-  m_CompressionFormat: 0
-  m_EditorResource:
-    m_Source: 
-    m_Offset: 0
-    m_Size: 0
-  m_EditorCompressionFormat: 0
 --- !u!1 &1898416201
 GameObject:
   m_ObjectHideFlags: 0
