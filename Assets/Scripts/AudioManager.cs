@@ -1,7 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System.Threading.Tasks;
+
 public class AudioManager : MonoBehaviour
 {
     [SerializeField] AudioSource musicSource;
@@ -22,7 +21,7 @@ public class AudioManager : MonoBehaviour
     {
         musicSource.clip = tutorial;
         musicSource.Play();
-        await Task.Delay(20000);
+        await Task.Delay(18000);
         musicSource.clip = backgroundMusic;
         musicSource.Play();
     }

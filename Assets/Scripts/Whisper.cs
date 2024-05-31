@@ -29,8 +29,8 @@ namespace Samples.Whisper
         public TMP_Text questionTvText;
         public TMP_Text answerTvText;
         public TMP_Text scoreTvText;
-        public TMP_Text statusTvText;  // Texto para mostrar el estado de grabación
-        public PressableButton recordButton; // Botón de MRTK3
+        public TMP_Text statusTvText;
+        public PressableButton recordButton;
 
         private readonly string fileName = "output.wav";
         private readonly int duration = 5;
@@ -51,14 +51,14 @@ namespace Samples.Whisper
         public Conversation conversation;
         public AudioManager audioManager;
         public int contadorMusica;
-        public EndGame endGame;  // Cambiado de 'Endgamecanvas' a 'EndGame' para coincidir con la nueva implementación
+        public EndGame endGame;
         public bool askedAlready = false;
 
         private bool isRecording = false;
 
         private async void Start()
         {
-            // Suscribir al evento de botón de MRTK3
+            // Sucripción del evento de botón de MRTK3
             recordButton.OnClicked.AddListener(OnRecordButtonPressed);
 
             scores.Add(8);
@@ -76,12 +76,12 @@ namespace Samples.Whisper
             if (!isRecording)
             {
                 StartRecording();
-                statusTvText.text = "Recording..."; // Mostrar estado de grabación
+                statusTvText.text = "Recording...";
             }
             else
             {
                 EndRecording();
-                statusTvText.text = "Recording stopped"; // Mostrar estado de detención de grabación
+                statusTvText.text = "Recording stopped";
             }
             isRecording = !isRecording;
         }
@@ -129,7 +129,7 @@ namespace Samples.Whisper
 
                     messages.Clear();
                     contadorMusica = 0;
-                    audioManager.changeTrack(contadorMusica); // TODO: handle win case
+                    audioManager.changeTrack(contadorMusica);
 
                     if (drawingProgress.GetDrawnObjects() < 4)
                     {
@@ -175,7 +175,6 @@ namespace Samples.Whisper
             Debug.Log("--------------------LLEGO PREGUNTA------------------------");
 
             ChatMessage newMessage = new ChatMessage();
-            //newMessage.Content = transcribedText;
             newMessage.Role = "user";
             var questionPrompt = prompt;
             if (mode == QuestionMode.ASK_AGAIN)
@@ -220,14 +219,14 @@ namespace Samples.Whisper
             {
                 Debug.Log("Tecla T presionada");
                 StartRecording();
-                statusTvText.text = "Recording..."; // Mostrar estado de grabación
+                statusTvText.text = "Recording...";
             }
             else if (Input.GetKeyUp(KeyCode.T) && conversation.listening)
             {
                 Debug.Log("Tecla T no presionada");
                 await Task.Delay(1000);
                 EndRecording();
-                statusTvText.text = "Recording stopped"; // Mostrar estado de detención de grabación
+                statusTvText.text = "Recording stopped";
             }
         }
 

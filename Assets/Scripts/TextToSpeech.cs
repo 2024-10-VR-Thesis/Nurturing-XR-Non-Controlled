@@ -2,13 +2,11 @@ using Amazon;
 using Amazon.Polly;
 using Amazon.Polly.Model;
 using Amazon.Runtime;
+using Samples.Whisper;
 using System.IO;
-using System;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
-using Newtonsoft.Json.Linq;
-using Unity.VisualScripting;
 
 namespace Scripts.TexToSpeech
 {
@@ -18,11 +16,13 @@ namespace Scripts.TexToSpeech
         public string introSpeak;
         public Conversation.Conversation conversation;
         public AnimationsHandler animationsHandler;
-        public MinuteHandMovement minuteHandMovement;
+        public ClockHandler clockHandler;
+        public ConversationStarter conversationStarter;
+        [SerializeField] public Whisper whisper;
 
         async void Start()
         {
-            // Cargar el archivo JSON desde Resources
+            // Carga el archivo JSON desde Resources
             TextAsset jsonTextFile = Resources.Load<TextAsset>("tutorial");
             if (jsonTextFile != null)
             {
@@ -69,15 +69,20 @@ namespace Scripts.TexToSpeech
                 while (!op.isDone) await Task.Yield();
                 var clip = DownloadHandlerAudioClip.GetContent(www);
                 audioSource.clip = clip;
+                //conversation.talking = true;
                 audioSource.Play();
+                //conversation.listening = true;
 
                 await Task.Delay((int)(clip.length * 1000)); // Convert clip length from seconds to milliseconds
+
                 conversation.talking = false;
             }
 
             if (tutorial)
             {
-                minuteHandMovement.StartTime();
+                whisper.scores.RemoveAt(0);
+                StartCoroutine(clockHandler.StartTime());
+                StartCoroutine(conversationStarter.StartConversation());
             }
         }
 

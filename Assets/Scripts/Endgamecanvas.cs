@@ -1,6 +1,4 @@
 using Scripts.Conversation;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using Samples.Whisper;
@@ -34,22 +32,32 @@ public class EndGame : MonoBehaviour
         {
             endPlayed++;
             audio.endgameVoice(razon);
-            double promedio = Math.Round(whisper.scores.Average(), 2);
+            double promedio = 0;
+
+            if (whisper.scores.Count > 0)
+            {
+                promedio = Math.Round(whisper.scores.Average(), 2);
+            }
+
             await Task.Delay(5000);
             DeleteAllTexts();
-            endgameTvText.text = "The End \n  \n Your score average was: " + promedio;
+            string razonText;
+
+            if (razon == 0)
+            {
+                razonText = "You won! Congratulations!";
+            }
+            else if (razon == 1)
+            {
+                razonText = "You lost! Time ran out!";
+            }
+            else
+            {
+                razonText = "You lost! You had too many bad answers in a row";
+            }
+
+            endgameTvText.text = "The End \n" + (razonText) + "\n Your score average was: " + promedio;
         }
-        /*
-        if (!conversation.playing && endPlayed == 0)
-        {
-            endPlayed++;
-            audio.endgameVoice(razon);
-            double promedio = whisper.scores.Average();
-            await Task.Delay(5000);
-            DeleteAllTexts();
-            endgameTvText.text = "The End \n  \n Your score average was: " + promedio;
-        }
-        */
     }
 
 
