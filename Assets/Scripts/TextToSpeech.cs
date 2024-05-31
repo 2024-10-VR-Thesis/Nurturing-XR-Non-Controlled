@@ -2,7 +2,6 @@ using Amazon;
 using Amazon.Polly;
 using Amazon.Polly.Model;
 using Amazon.Runtime;
-using Samples.Whisper;
 using System.IO;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -18,7 +17,6 @@ namespace Scripts.TexToSpeech
         public AnimationsHandler animationsHandler;
         public ClockHandler clockHandler;
         public ConversationStarter conversationStarter;
-        [SerializeField] public Whisper whisper;
 
         async void Start()
         {
@@ -73,7 +71,6 @@ namespace Scripts.TexToSpeech
 
             if (tutorial)
             {
-                whisper.scores.RemoveAt(0);
                 StartCoroutine(clockHandler.StartTime());
                 StartCoroutine(conversationStarter.StartConversation());
             }

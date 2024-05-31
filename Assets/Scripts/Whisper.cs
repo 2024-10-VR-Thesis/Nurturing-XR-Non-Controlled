@@ -49,7 +49,6 @@ namespace Samples.Whisper
             //GenerateImaginativeQuestion("Pillow", QuestionMode.OBJECT);
             //Debug.Log("Inicio");
             //await Task.Delay(15000);
-            scores.Add(8);
             contadorMusica = 0;
         }
 
