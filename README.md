@@ -5,7 +5,7 @@ Este repositorio incluye el código fuente para la versión en ambiente no contr
 0. Descargar Unity y la versión del editor 2022.3.5f1
 2. Descargar este repositorio localmente.
 3. Abrir el proyecto en Unity y esperar la descarga de paquetes.
-4. Configuración de credenciales:
+4. Configurar credenciales:
    1. Amazon Polly: [instrucciones](https://github.com/2024-10-XR-Thesis/.github/wiki/Instrucciones-Amazon-Polly).
    2. OpenAI: [instrucciones](https://github.com/2024-10-XR-Thesis/.github/wiki/Instrucciones-OpenAI).
 
