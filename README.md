@@ -1,4 +1,4 @@
-# Nurturing-XR-Controlled HoloLens 2 <img alt="microsoft logo" height="25" src="https://cdn-icons-png.flaticon.com/512/732/732221.png">
+# Nurturing XR Non-Controlled HoloLens 2 <img alt="microsoft logo" height="25" src="https://cdn-icons-png.flaticon.com/512/732/732221.png">
 Este repositorio incluye el código fuente para la versión en ambiente controlado del juego _Answering Anya_ desarrollado en Unity, orientado para el dispositivo HoloLens 2.
 
 ## Instalación
