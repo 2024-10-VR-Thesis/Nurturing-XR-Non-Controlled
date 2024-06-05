@@ -1,4 +1,4 @@
-# Nurturing XR Non-Controlled Meta <img alt="meta logo" height="25" src="https://1000logos.net/wp-content/uploads/2021/10/logo-Meta-1536x864.png">
+# Nurturing XR Uncontrolled Meta <img alt="meta logo" height="25" src="https://1000logos.net/wp-content/uploads/2021/10/logo-Meta-1536x864.png">
 Este repositorio incluye el código fuente para la versión en ambiente no controlado del juego _Answering Anya_ desarrollado en Unity, orientado para el dispositivo Meta Quest 3.
 
 ## Instalación
