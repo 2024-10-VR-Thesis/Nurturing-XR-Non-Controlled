@@ -19,5 +19,5 @@ Este repositorio incluye el código fuente para la versión en ambiente no contr
 <hr>
 
 <p align="center">
-  <img width="132" alt="meta quest 3" title="Meta Quest 3" src="https://github.com/2024-10-XR-Thesis/Nurturing-XR-Controlled/assets/69609680/8a43b9d7-6751-49a9-938b-d1f2d8767c26">
+  <img width="132" alt="meta quest 3" title="Meta Quest 3" src="https://github.com/2024-10-XR-Thesis/Nurturing-XR-Controlled/assets/69609680/64be960c-77e1-421d-b506-4693a554d691">
 </p>
