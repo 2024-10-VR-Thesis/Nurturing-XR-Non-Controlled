@@ -19,5 +19,5 @@ Este repositorio incluye el código fuente para la versión en ambiente controla
 <hr>
 
 <p align="center">
-  <img width="160" alt="hololens 2" title="HoloLens 2" src="https://github.com/2024-10-XR-Thesis/Nurturing-XR-Controlled/assets/69609680/68f5fe85-a824-4e03-8bbf-007e3f706dee">
+  <img width="160" alt="hololens 2" title="HoloLens 2" src="https://github.com/2024-10-XR-Thesis/Nurturing-XR-Controlled/assets/69609680/cc53ea71-2254-405e-a7d8-a1a11b5a21f1">
 </p>
